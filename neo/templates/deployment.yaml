@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "neo-helm-chart.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
+    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  {{- with .Values.deployment.labels }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  annotations:
+  {{- with .Values.deployment.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: neo-agent 
+  template: 
+    metadata:
+      labels:
+        app: neo-agent 
+      {{- with .Values.deployment.podLabels }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      annotations:
+      {{- with .Values.deployment.podAnnotations }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "neo-helm-chart.serviceAccountName" . }} 
+      containers:
+        - name: neo-agent 
+          image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: neo-certs 
+              mountPath: /var/run/neo-agent
+          {{- if .Values.deployment.args }}
+          args:
+          {{- with .Values.deployment.args }}
+          {{- range . }}
+          - {{ . | quote }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
+      volumes:
+        - name: neo-certs 
+          secret:
+            secretName: neo-certs 
+            items:
+              - key: tls.crt
+                path: cert.pem
+              - key: tls.key
+                path: key.pem
+

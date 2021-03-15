@@ -1,0 +1,20 @@
+# Default values for neo-helm-chart.
+image:
+  name: gcr.io/traefiklabs/neo-agent
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+deployment:
+  annotations: {}
+  labels: {}
+  podAnnotations: {}
+  podLabels: {}
+  args: []
+
+serviceAccount:
+  name: "neo"
+
+service:
+  annotations: {}
+  labels: {}
