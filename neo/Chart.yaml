@@ -1,9 +1,14 @@
-apiVersion: v1
+apiVersion: v2
 name: neo
-description: Neo is a global control plane that monitors, secures, and manages cloud-native applications across any Kubernetes environment, up to the edge. With support for multiple leading ingress and service mesh technologies, Neo simplifies networking management through a single, unified view of all your applications. 
-type: application
 version: 0.1.0
 appVersion: "0.1.0"
+kubeVersion: ">= 1.14"
+description: |
+  Neo is a global control plane that monitors, secures, and manages cloud-native applications across any
+  Kubernetes environment, up to the edge. With support for multiple leading ingress and service mesh technologies,
+  Neo simplifies networking management through a single, unified view of all your applications.
+type: application
+home: https://github.com/traefik/neo-helm-chart
 keywords:
   - neo
 sources:

@@ -5,16 +5,21 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
+# User token to access to neo
+token: powpow
+
 deployment:
-  annotations: {}
   # Additional deployment annotations
-  labels: {}
+  annotations: {}
   # Additional deployment labels
-  podAnnotations: {}
+  labels: {}
   # Additional pods annotations
-  podLabels: {}
+  podAnnotations: {}
   # Additional pods labels
-  args: ["--log-level=debug", "--log-format=console"]
+  podLabels: {}
+  args:
+    - --log-level=debug
+    - --platform-url=https://platform.neo.traefiklabs.tech
 
 serviceAccount:
   name: ""
@@ -23,7 +28,7 @@ serviceAccount:
   annotations: {}
 
 service:
-  annotations: {}
   # Additional service annotations
-  labels: {}
+  annotations: {}
   # Additional service labels
+  labels: {}

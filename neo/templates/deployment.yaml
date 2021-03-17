@@ -1,8 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "neo-helm-chart.fullname" . }}
-  namespace: {{ .Release.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
     helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
@@ -39,13 +40,12 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - mountPath: /var/run/neo-agent/
-              name: neo-certs 
-          {{- if .Values.deployment.args }}
+              name: neo-certs
           args:
+            - --token={{ .Values.token }}
           {{- with .Values.deployment.args }}
           {{- range . }}
           - {{ . | quote }}
-          {{- end }}
           {{- end }}
           {{- end }}
       volumes:

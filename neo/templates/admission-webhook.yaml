@@ -98,6 +98,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: webhook-cert-setup
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
     helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
