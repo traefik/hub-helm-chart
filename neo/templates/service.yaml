@@ -1,5 +1,3 @@
-{{- if not .Values.service.enable -}}
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -26,4 +24,3 @@ spec:
       name: neo-agent-auth
   selector:
     app: neo-agent
-{{- end -}}
