@@ -10,7 +10,7 @@ deployment:
   labels: {}
   podAnnotations: {}
   podLabels: {}
-  args: []
+  args: ["--log-level=debug", "--log-format=console"]
 
 serviceAccount:
   name: "neo"

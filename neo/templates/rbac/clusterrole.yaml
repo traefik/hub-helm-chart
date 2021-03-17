@@ -8,39 +8,41 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 rules:
-  - verbs:
-      - list
-      - watch
+  # Access Control RBACs.
+  - resources:
+      - ingressclasses
     apiGroups:
       - networking.k8s.io
       - neo.traefik.io
-    resources:
-      - ingressclasses
-  - verbs:
+    verbs:
       - list
       - watch
-      - update
+  - resources:
+      - ingresses
     apiGroups:
       - networking.k8s.io
       - extensions
-    resources:
-      - ingresses
-  - verbs:
+    verbs:
       - list
       - watch
+      - update
+  - resources:
+      - accesscontrolpolicies
     apiGroups:
       - neo.traefik.io
-    resources:
-      - accesscontrolpolicies
-  - verbs:
+    verbs:
+      - list
+      - watch
+  - resources:
+      - middlewares
+    apiGroups:
+      - traefik.containo.us
+    verbs:
       - create
       - get
       - update
       - delete
-    apiGroups:
-      - traefik.containo.us
-    resources:
-      - middlewares
+  # Other RBACs.
   - verbs:
       - list
     apiGroups:
@@ -96,4 +98,3 @@ rules:
       - get
       - list
       - watch
-
