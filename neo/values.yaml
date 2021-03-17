@@ -6,16 +6,27 @@ image:
   tag: "latest"
 
 deployment:
+  enable: true
   annotations: {}
+  # Additional deployment annotations
   labels: {}
+  # Additional deployment labels
   podAnnotations: {}
+  # Additional pods annotations
   podLabels: {}
+  # Additional pods labels
   args: ["--log-level=debug", "--log-format=console"]
 
 serviceAccount:
-  name: "neo"
+  name: ""
+  # If set, an existing service account is used
+  # If not set, a service account is created automatically using the fullname template
   create: true
+  annotations: {}
 
 service:
+  enable: true
   annotations: {}
+  # Additional service annotations
   labels: {}
+  # Additional service labels
