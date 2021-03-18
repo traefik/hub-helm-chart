@@ -9,6 +9,8 @@ description: |
   Neo simplifies networking management through a single, unified view of all your applications.
 type: application
 home: https://github.com/traefik/neo-helm-chart
+maintainers:
+  - name: mmatur
 keywords:
   - neo
 sources:

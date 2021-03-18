@@ -2,12 +2,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "neo-helm-chart.fullname" . }}
+  name: neo-agent
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
     helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   {{- with .Values.deployment.labels }}
   {{- toYaml . | nindent 4 }}
@@ -33,9 +34,9 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      serviceAccountName: {{ include "neo-helm-chart.serviceAccountName" . }} 
+      serviceAccountName: neo-agent
       containers:
-        - name: neo-agent 
+        - name: neo-agent
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
@@ -45,7 +46,7 @@ spec:
             - --token={{ .Values.token }}
           {{- with .Values.deployment.args }}
           {{- range . }}
-          - {{ . | quote }}
+            - {{ . | quote }}
           {{- end }}
           {{- end }}
       volumes:

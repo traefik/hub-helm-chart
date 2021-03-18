@@ -7,12 +7,13 @@ metadata:
     app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
     helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "neo-helm-chart.fullname" . }}
+  name: neo-agent
 subjects:
   - kind: ServiceAccount
-    name: {{ include "neo-helm-chart.serviceAccountName" . }}
+    name: neo-agent
     namespace: {{ .Release.Namespace }}

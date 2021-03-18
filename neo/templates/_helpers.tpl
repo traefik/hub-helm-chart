@@ -29,30 +29,3 @@ Create chart name and version as used by the chart label.
 {{- define "neo-helm-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
-
-{{/*
-Common labels
-*/}}
-{{- define "neo-helm-chart.labels" -}}
-helm.sh/chart: {{ include "neo-helm-chart.chart" . }}
-{{ include "neo-helm-chart.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "neo-helm-chart.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "neo-helm-chart.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "neo-helm-chart.serviceAccountName" -}}
-{{- default (include "neo-helm-chart.fullname" .) .Values.serviceAccount.name }}
-{{- end }}
