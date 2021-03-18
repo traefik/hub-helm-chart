@@ -1,0 +1,50 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: accesscontrolpolicies.neo.traefik.io
+spec:
+  group: neo.traefik.io
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                jwt:
+                  type: object
+                  properties:
+                    signingSecret:
+                      type: string
+                    signingSecretBase64Encoded:
+                      type: boolean
+                    publicKey:
+                      type: string
+                    jwksFile:
+                      type: string
+                    jwksUrl:
+                      type: string
+                    stripAuthorizationHeader:
+                      type: boolean
+                    forwardHeaders:
+                      type: object
+                      additionalProperties:
+                        type: string
+                    tokenQueryKey:
+                      type: string
+                    claims:
+                      type: string
+  scope: Namespaced
+  names:
+    plural: accesscontrolpolicies
+    singular: accesscontrolpolicy
+    kind: AccessControlPolicy
+    categories:
+      - neo
+    shortNames:
+      - acp

@@ -1,0 +1,102 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: neo-agent
+  labels:
+    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
+    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+rules:
+  # Access Control RBACs.
+  - resources:
+      - ingressclasses
+    apiGroups:
+      - networking.k8s.io
+      - neo.traefik.io
+    verbs:
+      - list
+      - watch
+  - resources:
+      - ingresses
+    apiGroups:
+      - networking.k8s.io
+      - extensions
+    verbs:
+      - list
+      - watch
+      - update
+  - resources:
+      - accesscontrolpolicies
+    apiGroups:
+      - neo.traefik.io
+    verbs:
+      - list
+      - watch
+  - resources:
+      - middlewares
+    apiGroups:
+      - traefik.containo.us
+    verbs:
+      - create
+      - get
+      - update
+      - delete
+  # Other RBACs.
+  - verbs:
+      - list
+    apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - pods
+  - apiGroups:
+      - traefik.containo.us
+    resources:
+      - middlewares
+      - ingressroutes
+      - traefikservices
+      - ingressroutetcps
+      - ingressrouteudps
+      - tlsoptions
+      - tlsstores
+      - serverstransports
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+      - secrets
+      - namespaces
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+      - networking.k8s.io
+    resources:
+      - ingresses
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+      - replicasets
+      - daemonsets
+    verbs:
+      - get
+      - list
+      - watch

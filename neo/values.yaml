@@ -1,0 +1,34 @@
+# Default values for neo-helm-chart.
+image:
+  name: gcr.io/traefiklabs/neo-agent
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+# User token to access to neo
+token: powpow
+
+deployment:
+  # Additional deployment annotations
+  annotations: {}
+  # Additional deployment labels
+  labels: {}
+  # Additional pods annotations
+  podAnnotations: {}
+  # Additional pods labels
+  podLabels: {}
+  args:
+    - --log-level=debug
+    - --platform-url=https://platform.neo.traefiklabs.tech
+
+serviceAccount:
+  name: ""
+  # If set, an existing service account is used
+  # If not set, a service account is created automatically using the fullname template
+  annotations: {}
+
+service:
+  # Additional service annotations
+  annotations: {}
+  # Additional service labels
+  labels: {}
