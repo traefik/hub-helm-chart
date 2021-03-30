@@ -6,7 +6,7 @@ image:
   tag: "latest"
 
 # User token to access to neo
-token: powpow
+token: ""
 
 deployment:
   # Additional deployment annotations
@@ -19,7 +19,19 @@ deployment:
   podLabels: {}
   args:
     - --log-level=debug
-    - --platform-url=https://platform.neo.traefiklabs.tech
+    - --platform-url=http://traefik.traefik.svc.cluster.local
+    - --acp-server.auth-server-addr=http://neo-agent.default.svc.cluster.local
+    - --scrape-ip=172.18.0.5
+    - --scrape-name=traefik
+    - --scrape-kind=traefik
+
+resources: {}
+  # requests:
+  #   cpu: "100m"
+  #   memory: "50Mi"
+  # limits:
+  #   cpu: "300m"
+  #   memory: "150Mi"
 
 serviceAccount:
   name: ""

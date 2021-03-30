@@ -21,8 +21,9 @@ spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: neo-agent 
-  template: 
+      app.kubernetes.io/name: {{ template "neo-helm-chart.name"}}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
     metadata:
       labels:
         app: neo-agent 
@@ -37,8 +38,15 @@ spec:
       serviceAccountName: neo-agent
       containers:
         - name: neo-agent
+          env:
+            - name: DISABLE_GIT_SSL_VERIFY
+              value: "true"
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 10 }}
+            {{- end }}
           volumeMounts:
             - mountPath: /var/run/neo-agent/
               name: neo-certs
