@@ -39,6 +39,28 @@ spec:
                       type: string
                     claims:
                       type: string
+                  basicAuth:
+                    type: object
+                    properties:
+                      users:
+                        type: string
+                      realm:
+                        type: string
+                      stropAuthorizationHeader:
+                        type: boolean
+                      forwardUsernameHeader:
+                        type: string
+                    digestAuth:
+                      type: object
+                      properties:
+                        users:
+                          type: string
+                        realm:
+                          type: string
+                        stripAuthorizationHeader:
+                          type: boolean
+                        forwardUsernameHeader:
+                          type: string
   scope: Namespaced
   names:
     plural: accesscontrolpolicies
