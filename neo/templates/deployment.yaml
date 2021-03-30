@@ -51,6 +51,10 @@ spec:
               name: neo-certs
           args:
             - --token={{ required "A valid .Values.token is required." .Values.token }}
+            - --acp-server.listen-addr=:443
+            - --acp-server.cert=/var/run/neo-agent/cert.pem
+            - --acp-server.key=/var/run/neo-agent/key.pem
+            - --acp-server.auth-server-addr=http://neo-agent.{{ .Release.Namespace }}.svc.cluster.local
           {{- with .Values.deployment.args }}
           {{- range . }}
             - {{ . | quote }}

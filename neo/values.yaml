@@ -20,7 +20,6 @@ deployment:
   args:
     - --log-level=debug
     - --platform-url=http://traefik.traefik.svc.cluster.local
-    - --acp-server.auth-server-addr=http://neo-agent.default.svc.cluster.local
     - --scrape-ip=172.18.0.5
     - --scrape-name=traefik
     - --scrape-kind=traefik
