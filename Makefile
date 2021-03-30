@@ -19,11 +19,11 @@ lint: lint-requirements
 	@git remote add neo-agent https://github.com/traefik/neo-helm-chart >/dev/null 2>&1 || true
 	@git fetch neo-agent master >/dev/null 2>&1 || true
 ifeq ($(LINT_USE_DOCKER),true)
-	@docker run --rm -t -v $(CURDIR):/charts -w /charts quay.io/helmpack/chart-testing:v3.3.1 $(LINT_CMD)
+	    @docker run --rm -t -v $(CURDIR):/charts -w /charts quay.io/helmpack/chart-testing:v3.3.1 $(LINT_CMD)
 else
-	cd $(CHART_DIR)/tests && $(LINT_CMD)
+	    cd $(CHART_DIR)/tests && $(LINT_CMD)
 endif
-	@echo "== Linting Finished"
+	    @echo "== Linting Finished"
 
 # Execute Units Tests
 unit-test: helm-unittest
