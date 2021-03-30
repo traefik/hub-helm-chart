@@ -65,3 +65,7 @@ spec:
                 path: cert.pem
               - key: tls.key
                 path: key.pem
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

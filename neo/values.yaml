@@ -33,6 +33,8 @@ resources: {}
   #   cpu: "300m"
   #   memory: "150Mi"
 
+nodeSelector: {}
+
 serviceAccount:
   name: ""
   # If set, an existing service account is used
