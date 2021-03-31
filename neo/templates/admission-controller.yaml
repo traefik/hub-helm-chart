@@ -14,7 +14,7 @@ metadata:
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-delete-policy: before-hook-creation
 webhooks:
-  - name: neo-agent.{{ .Release.Namespace }}.svc.cluster.local
+  - name: neo-agent.{{ .Release.Namespace }}.svc
     clientConfig:
       service:
         name: neo-agent

@@ -51,6 +51,7 @@ spec:
               name: neo-certs
           args:
             - --token={{ required "A valid .Values.token is required." .Values.token }}
+            - --auth-server.listen-addr=:80
             - --acp-server.listen-addr=:443
             - --acp-server.cert=/var/run/neo-agent/cert.pem
             - --acp-server.key=/var/run/neo-agent/key.pem
@@ -65,9 +66,9 @@ spec:
           secret:
             secretName: neo-certs 
             items:
-              - key: tls.crt
+              - key: cert
                 path: cert.pem
-              - key: tls.key
+              - key: key
                 path: key.pem
       {{- with .Values.affinity }}
       affinity:
