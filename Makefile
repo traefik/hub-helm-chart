@@ -1,9 +1,12 @@
 DIST_DIR ?= $(CURDIR)/dist
 CHART_DIR ?= $(CURDIR)/neo
 TMPDIR ?= /tmp
-PROJECT ?= github.com/traefik/neo-helm-chart
+HELM_REPO ?= $(CURDIR)/repo
 LINT_USE_DOCKER ?= true
 LINT_CMD ?= ct lint --config=lint/ct.yaml
+PROJECT ?= $(GITHUB_TOKEN)@github.com/traefik/neo-helm-chart
+VERSION ?= $(shell cat neo/Chart.yaml | grep 'version: ' | awk '{ print $$2 }')
+
 ################################## Functionnal targets
 
 all: clean test build 
@@ -33,12 +36,30 @@ build: global-requirements $(DIST_DIR)
 	@helm package $(CHART_DIR) --destination=$(DIST_DIR)
 	@echo "== Building Finished"
 
+# Prepare the Helm repository with the latest packaged charts
+package: global-requirements $(DIST_DIR) $(HELM_REPO) build full-yaml
+	@echo "== Deploying Chart..."
+	@rm -rf $(CURDIR)/gh-pages.zip
+	@curl -sSLO https://$(PROJECT)/archive/gh-pages.zip
+	@unzip -oj $(CURDIR)/gh-pages.zip -d $(HELM_REPO)/
+	@#cp $(DIST_DIR)/*tgz $(CURDIR)/artifacthub-repo.yml $(HELM_REPO)/
+	@cp $(DIST_DIR)/*tgz $(HELM_REPO)/
+	@cp $(CURDIR)/README.md $(HELM_REPO)/index.md
+	@cp -r $(DIST_DIR)/yaml $(HELM_REPO)/
+	@helm repo index --merge $(HELM_REPO)/index.yaml --url https://helm.traefik.io/neo/ $(HELM_REPO)
+	@echo "== Deploying Finished"
+
 # Cleanup leftovers and distribution dir
 clean:
 	@echo "== Cleaning..."
 	@rm -rf $(DIST_DIR)
 	@rm -rf $(HELM_REPO)
 	@echo "== Cleaning Finished"
+
+# Generate full yaml
+full-yaml:
+	@echo "== Generating full yaml for $(VERSION)"
+	@helm template neo neo > $(DIST_DIR)/yaml/$(VERSION).yaml
 
 install: global-requirements $(DIST_DIR)
 	@helm install neo $(CHART_DIR)
@@ -73,7 +94,7 @@ endif
 
 ################################## Technical targets
 $(DIST_DIR):
-	@mkdir -p $(DIST_DIR)
+	@mkdir -p $(DIST_DIR)/yaml
 
 $(HELM_REPO):
 	@mkdir -p $(HELM_REPO)
@@ -83,4 +104,4 @@ helm-unittest: global-requirements
 	@helm plugin list 2>/dev/null | grep unittest >/dev/null || helm plugin install https://github.com/rancher/helm-unittest --debug
 	@echo "== plugin helm-unittest is ready"
 
-.PHONY: all global-requirements lint-requirements helm-unittest lint build deploy clean
+.PHONY: all global-requirements lint-requirements helm-unittest lint build package clean full-yaml
