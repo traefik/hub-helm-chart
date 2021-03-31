@@ -32,3 +32,10 @@ jobs:
       - name: Lint, build and test
         run: |
           make
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: dist/
+          clean: false
