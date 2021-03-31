@@ -1,0 +1,48 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: webhook-cert-cluster-role-patch
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
+    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: "4"
+rules:
+  - verbs:
+      - get
+      - update
+    resources:
+      - mutatingwebhookconfigurations
+    apiGroups:
+      - admissionregistration.k8s.io
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: webhook-cert-cluster-role-binding-patch
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
+    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: "5"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: webhook-cert-cluster-role-patch
+subjects:
+  - kind: ServiceAccount
+    name: webhook-cert-sa
+    namespace: {{ .Release.Namespace }}

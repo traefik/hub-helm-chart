@@ -21,8 +21,8 @@ spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: neo-agent 
-  template: 
+      app: neo-agent
+  template:
     metadata:
       labels:
         app: neo-agent 
@@ -37,13 +37,25 @@ spec:
       serviceAccountName: neo-agent
       containers:
         - name: neo-agent
+          env:
+            - name: DISABLE_GIT_SSL_VERIFY
+              value: "true"
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 10 }}
+            {{- end }}
           volumeMounts:
             - mountPath: /var/run/neo-agent/
               name: neo-certs
           args:
-            - --token={{ .Values.token }}
+            - --token={{ required "A valid .Values.token is required." .Values.token }}
+            - --auth-server.listen-addr=:80
+            - --acp-server.listen-addr=:443
+            - --acp-server.cert=/var/run/neo-agent/cert.pem
+            - --acp-server.key=/var/run/neo-agent/key.pem
+            - --acp-server.auth-server-addr=http://neo-agent.{{ .Release.Namespace }}.svc.cluster.local
           {{- with .Values.deployment.args }}
           {{- range . }}
             - {{ . | quote }}
@@ -54,7 +66,19 @@ spec:
           secret:
             secretName: neo-certs 
             items:
-              - key: tls.crt
+              - key: cert
                 path: cert.pem
-              - key: tls.key
+              - key: key
                 path: key.pem
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

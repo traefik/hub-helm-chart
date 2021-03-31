@@ -21,7 +21,7 @@ rules:
     require-starting-space: true
     min-spaces-from-content: 2
   document-end: disable
-  document-start: enable
+  document-start: disable
   empty-lines:
     max: 2
     max-start: 0
