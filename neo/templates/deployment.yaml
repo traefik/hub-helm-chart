@@ -35,6 +35,10 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: neo-agent
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: neo-agent
           env:
