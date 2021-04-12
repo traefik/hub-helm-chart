@@ -2,6 +2,7 @@
 image:
   name: gcr.io/traefiklabs/neo-agent
   pullPolicy: IfNotPresent
+  pullSecrets: []
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
