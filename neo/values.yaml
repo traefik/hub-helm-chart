@@ -20,7 +20,7 @@ deployment:
   podLabels: {}
   args:
     - --log-level=debug
-    - --platform-url=http://traefik.traefik.svc.cluster.local
+    - --platform-url=https://platform-preview.neo.traefiklabs.tech/agent
 
 resources: {}
   # requests:
