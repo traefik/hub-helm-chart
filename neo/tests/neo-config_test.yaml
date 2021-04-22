@@ -10,6 +10,7 @@ tests:
   - it: should change image when image.tag is specified
     set:
       image:
+        name: gcr.io/traefiklabs/neo-agent
         tag:
           alpha2.0
     asserts:
@@ -29,6 +30,7 @@ tests:
     set:
       image:
         name: gcr.io/traefiklabs/neo-agent
+        tag: latest
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
