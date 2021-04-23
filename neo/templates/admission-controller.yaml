@@ -41,5 +41,5 @@ webhooks:
       - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "traefik.containo.us" ]
         apiVersions: [ "v1alpha1" ]
-        resources: [ "ingresseroutes" ]
+        resources: [ "ingressroutes" ]
         scope: "Namespaced"
