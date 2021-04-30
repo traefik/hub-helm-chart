@@ -46,6 +46,16 @@ spec:
               value: "true"
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          readinessProbe:
+            tcpSocket:
+              port: 443
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          livenessProbe:
+            tcpSocket:
+              port: 443
+            initialDelaySeconds: 5
+            periodSeconds: 20
           resources:
             {{- with .Values.resources }}
             {{- toYaml . | nindent 10 }}
