@@ -72,7 +72,6 @@ rules:
     resources:
       - services
       - endpoints
-      - secrets
       - namespaces
       - pods
     verbs:
@@ -100,3 +99,14 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+      - delete
