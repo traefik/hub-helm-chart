@@ -51,7 +51,7 @@ helm install neo neo/ --namespace neo
 
 ### Launch unit tests
 
-You need the helm-plugin: https://github.com/rancher/unittest
+You need the helm-plugin: https://github.com/rancher/helm-unittest
 
 Then:
 

@@ -110,3 +110,9 @@ rules:
       - update
       - create
       - delete
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+    resources:
+      - pods/log
