@@ -112,7 +112,7 @@ rules:
       - delete
   - apiGroups:
       - ""
-    verbs:
-      - get
     resources:
       - pods/log
+    verbs:
+      - get
