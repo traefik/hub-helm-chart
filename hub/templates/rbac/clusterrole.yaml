@@ -2,10 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: neo-agent
+  name: hub-agent
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -15,7 +15,7 @@ rules:
       - ingressclasses
     apiGroups:
       - networking.k8s.io
-      - neo.traefik.io
+      - hub.traefik.io
     verbs:
       - list
       - watch
@@ -31,7 +31,7 @@ rules:
   - resources:
       - accesscontrolpolicies
     apiGroups:
-      - neo.traefik.io
+      - hub.traefik.io
     verbs:
       - list
       - watch

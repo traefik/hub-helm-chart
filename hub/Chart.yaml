@@ -1,0 +1,17 @@
+apiVersion: v2
+name: hub
+version: 0.2.0
+appVersion: "0.1.0"
+kubeVersion: ">= 1.14"
+description: |
+  Hub is a global control plane that monitors, secures, and manages cloud-native applications across any
+  Kubernetes environment, up to the edge. With support for multiple leading ingress and service mesh technologies,
+  Hub simplifies networking management through a single, unified view of all your applications.
+type: application
+home: https://github.com/traefik/hub-helm-chart
+maintainers:
+  - name: mmatur
+keywords:
+  - hub
+sources:
+  - https://github.com/traefik/hub-agent

@@ -2,18 +2,18 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "neo-helm-chart.fullname" . }} 
+  name: {{ include "hub-helm-chart.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: neo-agent
+  name: hub-agent
 subjects:
   - kind: ServiceAccount
-    name: neo-agent
+    name: hub-agent
     namespace: {{ .Release.Namespace }}

@@ -1,47 +1,46 @@
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: webhook-cert-cluster-role-patch
+  name: webhook-cert-role-create
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   annotations:
     helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
-    helm.sh/hook-weight: "4"
+    helm.sh/hook-weight: "2"
 rules:
   - verbs:
+      - create
       - get
-      - update
-    resources:
-      - mutatingwebhookconfigurations
     apiGroups:
-      - admissionregistration.k8s.io
-
+      - ""
+    resources:
+      - secrets
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: webhook-cert-cluster-role-binding-patch
+  name: webhook-cert-role-binding-create
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   annotations:
     helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
-    helm.sh/hook-weight: "5"
+    helm.sh/hook-weight: "3"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: webhook-cert-cluster-role-patch
+  kind: Role
+  name: webhook-cert-role-create
 subjects:
   - kind: ServiceAccount
     name: webhook-cert-sa
