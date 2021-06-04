@@ -11,7 +11,8 @@ token: "plop"
 
 deployment:
   # Additional deployment annotations
-  annotations: {}
+  annotations:
+    hub.traefik.io/ingress-controller: none
   # Additional deployment labels
   labels: {}
   # Additional pods annotations
