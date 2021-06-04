@@ -1,46 +1,47 @@
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
-  name: webhook-cert-role-create
+  name: webhook-cert-cluster-role-patch
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   annotations:
     helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
-    helm.sh/hook-weight: "2"
+    helm.sh/hook-weight: "4"
 rules:
   - verbs:
-      - create
       - get
-    apiGroups:
-      - ""
+      - update
     resources:
-      - secrets
+      - mutatingwebhookconfigurations
+    apiGroups:
+      - admissionregistration.k8s.io
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: webhook-cert-role-binding-create
+  name: webhook-cert-cluster-role-binding-patch
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   annotations:
     helm.sh/hook: pre-install,pre-upgrade,post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
-    helm.sh/hook-weight: "3"
+    helm.sh/hook-weight: "5"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: webhook-cert-role-create
+  kind: ClusterRole
+  name: webhook-cert-cluster-role-patch
 subjects:
   - kind: ServiceAccount
     name: webhook-cert-sa

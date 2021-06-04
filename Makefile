@@ -1,11 +1,11 @@
 DIST_DIR ?= $(CURDIR)/dist
-CHART_DIR ?= $(CURDIR)/neo
+CHART_DIR ?= $(CURDIR)/hub
 TMPDIR ?= /tmp
 HELM_REPO ?= $(CURDIR)/repo
 LINT_USE_DOCKER ?= true
 LINT_CMD ?= ct lint --config=lint/ct.yaml
-PROJECT ?= traefik/neo-helm-chart
-VERSION ?= $(shell cat neo/Chart.yaml | grep 'version: ' | awk '{ print $$2 }')
+PROJECT ?= traefik/hub-helm-chart
+VERSION ?= $(shell cat hub/Chart.yaml | grep 'version: ' | awk '{ print $$2 }')
 
 ################################## Functionnal targets
 
@@ -16,8 +16,8 @@ test: lint unit-test
 # Execute Static Testing
 lint: lint-requirements
 	@echo "== Linting Chart..."
-	@git remote add neo-agent https://github.com/traefik/neo-helm-chart >/dev/null 2>&1 || true
-	@git fetch neo-agent master >/dev/null 2>&1 || true
+	@git remote add hub-agent https://github.com/traefik/hub-helm-chart >/dev/null 2>&1 || true
+	@git fetch hub-agent master >/dev/null 2>&1 || true
 ifeq ($(LINT_USE_DOCKER),true)
 	    @docker run --rm -t -v $(CURDIR):/charts -w /charts quay.io/helmpack/chart-testing:v3.3.1 $(LINT_CMD)
 else
@@ -28,7 +28,7 @@ endif
 # Execute Units Tests
 unit-test: helm-unittest
 	@echo "== Unit Testing Chart..."
-	@helm unittest --color --update-snapshot ./neo
+	@helm unittest --color --update-snapshot ./hub
 	@echo "== Unit Tests Finished..."
 
 build: global-requirements $(DIST_DIR)
@@ -45,7 +45,7 @@ package: global-requirements $(DIST_DIR) $(HELM_REPO) build full-yaml
 	@cp $(DIST_DIR)/*tgz $(HELM_REPO)/
 	@cp $(CURDIR)/README.md $(HELM_REPO)/index.md
 	@cp -r $(DIST_DIR)/yaml $(HELM_REPO)/
-	@helm repo index --merge $(HELM_REPO)/index.yaml --url https://helm.traefik.io/neo/ $(HELM_REPO)
+	@helm repo index --merge $(HELM_REPO)/index.yaml --url https://helm.traefik.io/hub/ $(HELM_REPO)
 	@echo "== Deploying Finished"
 
 # Cleanup leftovers and distribution dir
@@ -58,13 +58,13 @@ clean:
 # Generate full yaml
 full-yaml:
 	@echo "== Generating full yaml for $(VERSION)"
-	@helm template neo neo > $(DIST_DIR)/yaml/$(VERSION).yaml
+	@helm template hub hub > $(DIST_DIR)/yaml/$(VERSION).yaml
 
 install: global-requirements $(DIST_DIR)
-	@helm install neo $(CHART_DIR)
+	@helm install hub $(CHART_DIR)
 
 uninstall: global-requirements $(DIST_DIR)
-	@helm uninstall neo $(CHART_DIR)
+	@helm uninstall hub $(CHART_DIR)
 	clean
 
 global-requirements:

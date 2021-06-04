@@ -1,4 +1,4 @@
-# Default values for neo-helm-chart.
+# Default values for hub-helm-chart.
 image:
   name: mmatur/traefik
   pullPolicy: IfNotPresent
@@ -6,7 +6,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "agent"
 
-# User token to access to neo
+# User token to access to hub
 token: "plop"
 
 deployment:
@@ -20,7 +20,7 @@ deployment:
   podLabels: {}
   args:
     - --log-level=debug
-    - --platform-url=https://platform-preview.neo.traefiklabs.tech/agent
+    - --platform-url=https://platform.hub.traefik.io/agent
 
 resources: {}
   # requests:

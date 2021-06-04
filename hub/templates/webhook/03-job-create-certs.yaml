@@ -2,18 +2,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: webhook-cert-patch
+  name: webhook-cert-create
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   annotations:
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
-    helm.sh/hook-weight: "7"
+    helm.sh/hook-weight: "6"
 spec:
   template:
     spec:
@@ -28,15 +28,12 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
           args:
-            - patch
-            - --webhook-name=neo
+            - create
+            - --host=hub-agent,hub-agent.$(POD_NAMESPACE),hub-agent.$(POD_NAMESPACE).svc
             - --namespace=$(POD_NAMESPACE)
-            - --patch-mutating=true
-            - --patch-validating=false
-            - --secret-name=neo-certs
-            - --patch-failure-policy=Ignore
+            - --secret-name=hub-certs
       restartPolicy: OnFailure
       securityContext:
         runAsNonRoot: true
         runAsUser: 2000
-  backoffLimit: 10
+  backoffLimit: 0

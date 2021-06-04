@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: neo-agent
+  name: hub-agent
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "neo-helm-chart.name" . }}
-    helm.sh/chart: {{ template "neo-helm-chart.chart" . }}
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -21,8 +21,8 @@ spec:
   type: ClusterIP
   ports:
     - port: 443
-      name: neo-agent-webhook
+      name: hub-agent-webhook
     - port: 80
-      name: neo-agent-auth
+      name: hub-agent-auth
   selector:
-    app: neo-agent
+    app: hub-agent
