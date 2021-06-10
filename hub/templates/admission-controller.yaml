@@ -17,7 +17,7 @@ webhooks:
   - name: hub-agent.{{ .Release.Namespace }}.svc
     clientConfig:
       service:
-        name: hub-agent
+        name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
         path: /
     sideEffects: None

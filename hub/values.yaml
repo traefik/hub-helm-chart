@@ -9,7 +9,7 @@ image:
 # User token to access to hub
 token: "plop"
 
-deployment:
+controllerDeployment:
   # Additional deployment annotations
   annotations:
     hub.traefik.io/ingress-controller: none
@@ -21,7 +21,19 @@ deployment:
   podLabels: {}
   args:
     - --log-level=debug
-    - --platform-url=https://platform.hub.traefik.io/agent
+
+authServerDeployment:
+  # Additional deployment annotations
+  annotations:
+    hub.traefik.io/ingress-controller: none
+  # Additional deployment labels
+  labels: { }
+  # Additional pods annotations
+  podAnnotations: { }
+  # Additional pods labels
+  podLabels: { }
+  args:
+    - --log-level=debug
 
 resources: {}
   # requests:

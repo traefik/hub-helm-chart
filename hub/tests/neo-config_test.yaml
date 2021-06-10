@@ -1,6 +1,6 @@
 suite: Hub deployment
 templates:
-  - deployment.yaml
+  - deployment-controller.yaml
 tests:
   - it: should have 1 replicas 
     asserts:
