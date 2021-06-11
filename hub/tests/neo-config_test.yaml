@@ -37,7 +37,7 @@ tests:
           value: gcr.io/traefiklabs/hub-agent:latest
   - it: should have annotations and/or  podsAnnotations when specified
     set:
-      deployment:
+      controllerDeployment:
         annotations:
           hub/plop: annotations
         podAnnotations:
@@ -51,7 +51,7 @@ tests:
           value: podAnnotations
   - it: should have specific label when specified
     set:
-      deployment:
+      controllerDeployment:
         podLabels:
           custom-label: plop
     asserts:
