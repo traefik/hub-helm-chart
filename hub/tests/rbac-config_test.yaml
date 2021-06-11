@@ -1,6 +1,6 @@
 suite: rbac config
 tests:
-  - it: should create a default rbac objects
+  - it: should create a default rbac object
     asserts:
       - isKind:
           of: ClusterRole
