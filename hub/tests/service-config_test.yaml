@@ -1,6 +1,6 @@
 suite: service configuration 
 templates:
-  - service.yaml
+  - services.yaml
 tests:
   - it: should have specific label when specified
     set:

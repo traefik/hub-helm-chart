@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: hub-agent
+  name: hub-agent-controller
   labels:
     app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
     helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
@@ -11,47 +11,47 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
 rules:
   # Access Control RBACs.
-  - resources:
-      - ingressclasses
-    apiGroups:
+  - apiGroups:
       - networking.k8s.io
       - hub.traefik.io
+    resources:
+      - ingressclasses
     verbs:
       - list
       - watch
-  - resources:
-      - ingresses
-    apiGroups:
+  - apiGroups:
       - networking.k8s.io
       - extensions
+    resources:
+      - ingresses
     verbs:
       - list
       - watch
       - update
-  - resources:
-      - accesscontrolpolicies
-    apiGroups:
+  - apiGroups:
       - hub.traefik.io
+    resources:
+      - accesscontrolpolicies
     verbs:
       - list
       - watch
-  - resources:
-      - middlewares
-    apiGroups:
+  - apiGroups:
       - traefik.containo.us
+    resources:
+      - middlewares
     verbs:
       - create
       - get
       - update
       - delete
   # Other RBACs.
-  - verbs:
-      - list
-    apiGroups:
+  - apiGroups:
       - ""
     resources:
       - namespaces
       - pods
+    verbs:
+      - list
   - apiGroups:
       - traefik.containo.us
     resources:
