@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This chart install the Hub-agent as a Kubernetes deployment.
+This chart installs the Hub agent in a Kubernetes cluster. The agent consists of two deployments: a controller and multiple authentication servers.
 
 ## Installation
 
