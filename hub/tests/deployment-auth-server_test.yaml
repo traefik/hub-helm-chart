@@ -1,6 +1,6 @@
 suite: Hub deployment
 templates:
-  - deployment-controller-auth-server.yaml
+  - deployment-auth-server.yaml
 tests:
   - it: should have 3 replicas
     asserts:
