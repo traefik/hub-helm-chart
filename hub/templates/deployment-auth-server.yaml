@@ -50,12 +50,12 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:
             tcpSocket:
-              port: 443
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 20
           livenessProbe:
             tcpSocket:
-              port: 443
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 20
           resources:
