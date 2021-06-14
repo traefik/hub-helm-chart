@@ -67,7 +67,6 @@ spec:
               name: hub-certs
           args:
             - controller
-            - --platform-url=https://platform.hub.traefik.io/agent
             - --token={{ required "A valid .Values.token is required." .Values.token }}
             - --acp-server.listen-addr=:443
             - --acp-server.cert=/var/run/hub-agent/cert.pem
