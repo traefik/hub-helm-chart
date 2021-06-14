@@ -1,6 +1,6 @@
-suite: service configuration 
+suite: service configuration
 templates:
-  - service.yaml
+  - services.yaml
 tests:
   - it: should have specific label when specified
     set:
@@ -11,4 +11,3 @@ tests:
       - equal:
           path: metadata.labels.custom-label
           value: plop
-

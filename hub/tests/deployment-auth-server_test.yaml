@@ -1,12 +1,12 @@
 suite: Hub deployment
 templates:
-  - deployment.yaml
+  - deployment-auth-server.yaml
 tests:
-  - it: should have 1 replicas 
+  - it: should have 3 replicas
     asserts:
-      - equal: 
+      - equal:
           path: spec.replicas
-          value: 1 
+          value: 3
   - it: should change image when image.tag is specified
     set:
       image:
@@ -21,11 +21,11 @@ tests:
     set:
       image:
         pullPolicy:
-          Always 
+          Always
     asserts:
       - equal:
           path: spec.template.spec.containers[0].imagePullPolicy
-          value: Always 
+          value: Always
   - it: should have an image when image.name is specified
     set:
       image:
@@ -37,25 +37,24 @@ tests:
           value: gcr.io/traefiklabs/hub-agent:latest
   - it: should have annotations and/or  podsAnnotations when specified
     set:
-      deployment:
+      authServerDeployment:
         annotations:
           hub/plop: annotations
-        podAnnotations:  
+        podAnnotations:
           hub/plop: podAnnotations
     asserts:
       - equal:
           path: metadata.annotations.hub/plop
-          value: annotations 
+          value: annotations
       - equal:
           path: spec.template.metadata.annotations.hub/plop
-          value: podAnnotations 
+          value: podAnnotations
   - it: should have specific label when specified
     set:
-      deployment:
+      authServerDeployment:
         podLabels:
           custom-label: plop
     asserts:
       - equal:
           path: spec.template.metadata.labels.custom-label
           value: plop
-

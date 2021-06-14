@@ -1,16 +1,20 @@
 ---
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
 metadata:
-  name: hub-agent
-  namespace: {{ .Release.Namespace }}
+  name: hub-agent-auth-server
   labels:
     app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
     helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-  annotations:
-  {{- with .Values.serviceAccount.annotations }}
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+rules:
+  # Access Control RBACs.
+  - resources:
+      - accesscontrolpolicies
+    apiGroups:
+      - hub.traefik.io
+    verbs:
+      - list
+      - watch
