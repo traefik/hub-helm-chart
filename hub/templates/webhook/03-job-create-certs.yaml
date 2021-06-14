@@ -29,7 +29,7 @@ spec:
                   fieldPath: metadata.namespace
           args:
             - create
-            - --host=hub-agent,hub-agent.$(POD_NAMESPACE),hub-agent.$(POD_NAMESPACE).svc
+            - --host=hub-agent-controller,hub-agent-controller.$(POD_NAMESPACE),hub-agent-controller.$(POD_NAMESPACE).svc
             - --namespace=$(POD_NAMESPACE)
             - --secret-name=hub-certs
       restartPolicy: OnFailure

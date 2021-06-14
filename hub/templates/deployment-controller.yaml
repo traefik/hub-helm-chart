@@ -71,7 +71,7 @@ spec:
             - --acp-server.listen-addr=:443
             - --acp-server.cert=/var/run/hub-agent/cert.pem
             - --acp-server.key=/var/run/hub-agent/key.pem
-            - --acp-server.auth-server-addr=http://hub-agent.{{ .Release.Namespace }}.svc.cluster.local
+            - --acp-server.auth-server-addr=http://hub-agent-auth-server.{{ .Release.Namespace }}.svc.cluster.local
           {{- with .Values.controllerDeployment.args }}
           {{- range . }}
             - {{ . | quote }}
