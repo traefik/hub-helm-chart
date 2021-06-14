@@ -18,7 +18,7 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.authServerDeployment.replicas }}
   selector:
     matchLabels:
       app: hub-agent

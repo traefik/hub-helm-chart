@@ -23,6 +23,8 @@ controllerDeployment:
     - --log-level=debug
 
 authServerDeployment:
+  # Number of replicas
+  replicas: 3
   # Additional deployment annotations
   annotations:
     hub.traefik.io/ingress-controller: none
