@@ -23,22 +23,22 @@ webhooks:
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:
-      - operations: [ "CREATE", "UPDATE" ]
+      - operations: [ "CREATE", "UPDATE", "DELETE" ]
         apiGroups: [ "extensions" ]
         apiVersions: [ "v1beta1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE" ]
+      - operations: [ "CREATE", "UPDATE", "DELETE" ]
         apiGroups: [ "networking.k8s.io" ]
         apiVersions: [ "v1beta1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE" ]
+      - operations: [ "CREATE", "UPDATE", "DELETE" ]
         apiGroups: [ "networking.k8s.io" ]
         apiVersions: [ "v1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE" ]
+      - operations: [ "CREATE", "UPDATE", "DELETE" ]
         apiGroups: [ "traefik.containo.us" ]
         apiVersions: [ "v1alpha1" ]
         resources: [ "ingressroutes" ]
