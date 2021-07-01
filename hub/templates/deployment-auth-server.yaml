@@ -49,12 +49,14 @@ spec:
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /_ready
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 20
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /_live
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 20
