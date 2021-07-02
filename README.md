@@ -6,7 +6,7 @@ This chart installs the Hub agent in a Kubernetes cluster. The agent consists of
 
 ## Installation
 
-### Prerequisities:
+### Prerequisites:
 
 With the command `helm version`, make sure that you have:
 - Helm v3 [installed](https://helm.sh/docs/using_helm/#installing-helm)

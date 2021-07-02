@@ -4,9 +4,8 @@ version: 0.3.4
 appVersion: "0.1.0"
 kubeVersion: ">= 1.14"
 description: |
-  Hub is a global control plane that monitors, secures, and manages cloud-native applications across any
-  Kubernetes environment, up to the edge. With support for multiple leading ingress and service mesh technologies,
-  Hub simplifies networking management through a single, unified view of all your applications.
+  Traefik Hub is an all-in-one global networking platform that provides contextual observability,
+  end-to-end connectivity, and zero-trust security for all of your mission-critical Kubernetes workloads.
 type: application
 home: https://github.com/traefik/hub-helm-chart
 maintainers:
