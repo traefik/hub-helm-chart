@@ -45,7 +45,7 @@ spec:
                       type: string
                     realm:
                       type: string
-                    stropAuthorizationHeader:
+                    stripAuthorizationHeader:
                       type: boolean
                     forwardUsernameHeader:
                       type: string
