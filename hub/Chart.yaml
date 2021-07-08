@@ -1,8 +1,10 @@
 apiVersion: v2
 name: hub
-version: 0.4.1
+version: 0.4.2
 appVersion: "0.1.0"
-kubeVersion: ">= 1.14"
+# Because of https://github.com/helm/helm/issues/3810 the pre-release version suffix has to be define.
+# This allows the installation on Kubernetes cluster with a pre-release version (e.g. v1.19.9-gke.1900)
+kubeVersion: ">= 1.14.0-0"
 description: |
   Traefik Hub is an all-in-one global networking platform that provides contextual observability,
   end-to-end connectivity, and zero-trust security for all of your mission-critical Kubernetes workloads.
