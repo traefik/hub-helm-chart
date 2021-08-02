@@ -36,4 +36,8 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 2000
+      {{- with .Values.jobs.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
   backoffLimit: 0
