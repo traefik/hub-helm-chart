@@ -60,7 +60,3 @@ service:
   annotations: {}
   # Additional service labels
   labels: {}
-
-jobs:
-  # Tolerations applied to the agent jobs
-  tolerations: []
