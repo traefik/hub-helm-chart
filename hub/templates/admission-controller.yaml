@@ -1,5 +1,5 @@
 {{- $host := printf "hub-agent-controller.%s.svc" .Release.Namespace }}
-{{- $crt := genSelfSignedCert $host (list) (list $host) .Values.mutatingWebhook.certValidity }}
+{{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
 ---
 kind: Secret
 apiVersion: v1
