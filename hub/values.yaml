@@ -60,3 +60,7 @@ service:
   annotations: {}
   # Additional service labels
   labels: {}
+
+mutatingWebhook:
+  # The webhook certificate validity duration in days (100 years by default)
+  certValidity: 36525

@@ -1,14 +1,14 @@
 {{- $host := printf "hub-agent-controller.%s.svc" .Release.Namespace }}
-{{- $ca := genSelfSignedCert $host (list) (list $host) 36525 }} # 100 years
+{{- $crt := genSelfSignedCert $host (list) (list $host) .Values.mutatingWebhook.certValidity }}
 ---
 kind: Secret
 apiVersion: v1
 metadata:
-  name: hub-certs
+  name: hub-agent-certs
   namespace: {{ .Release.Namespace }}
 data:
-  cert: {{ b64enc (trim $ca.Cert) }}
-  key: {{ b64enc (trim $ca.Key) }}
+  cert: {{ b64enc (trim $crt.Cert) }}
+  key: {{ b64enc (trim $crt.Key) }}
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -32,7 +32,7 @@ webhooks:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
         path: /
-      caBundle: {{ b64enc (trim $ca.Cert) }}
+      caBundle: {{ b64enc (trim $crt.Cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:
