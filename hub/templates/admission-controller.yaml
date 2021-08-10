@@ -1,3 +1,15 @@
+{{- $host := printf "hub-agent-controller.%s.svc" .Release.Namespace }}
+{{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: hub-agent-certs
+  namespace: {{ .Release.Namespace }}
+data:
+  cert: {{ b64enc (trim $crt.Cert) }}
+  key: {{ b64enc (trim $crt.Key) }}
+
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
@@ -20,6 +32,7 @@ webhooks:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
         path: /
+      caBundle: {{ b64enc (trim $crt.Cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:
