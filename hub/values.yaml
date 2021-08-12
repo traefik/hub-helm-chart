@@ -22,6 +22,18 @@ controllerDeployment:
   args:
     - --log-level=debug
 
+gatewayDeployment:
+  # Additional deployment annotations
+  annotations: { }
+  # Additional deployment labels
+  labels: { }
+  # Additional pods annotations
+  podAnnotations: { }
+  # Additional pods labels
+  podLabels: { }
+  args:
+    - --log-level=debug
+
 authServerDeployment:
   # Number of replicas
   replicas: 3
