@@ -1,0 +1,16 @@
+name: "my-acp"
+basicAuth:
+  # Create passwords with: htpasswd -nB [USERNAME]
+  #users: "user:$apr1$qs42pk1o$r1igImqwPOBxGOHdnRGRI1,user2:$apr1$hsge07nv$9J6KUZOoHnUxsK1ws3X/z1"
+  users: ""
+  stripAuthorizationHeader: true
+  forwardUsernameHeader: "User"
+jwt:
+  signingSecret: ""
+  stripAuthorizationHeader: true
+  forwardHeaders:
+    Name: name
+digestAuth:
+  # Create passwords with: htdigest -c digest.db [REALM] [USERNAME]
+  #users: "user:relam:$apr1$qs42pk1o$r1igImqwPOBxGOHdnRGRI1"
+  users: ""

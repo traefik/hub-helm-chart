@@ -1,0 +1,14 @@
+apiVersion: hub.traefik.io/v1alpha1
+kind: AccessControlPolicy
+metadata:
+  name: {{ .Values.name }}
+spec:
+{{- if .Values.basicAuth.users }}
+  basicAuth: {{- toYaml .Values.basicAuth | nindent 4 }}
+{{- end }}
+{{- if .Values.digestAuth.users }}
+  digestAuth: {{- toYaml .Values.digestAuth | nindent 4 }}
+{{- end }}
+{{- if .Values.jwt.signingSecret }}
+  jwt: {{- toYaml .Values.jwt | nindent 4 }}
+{{- end }}
