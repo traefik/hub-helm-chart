@@ -1,36 +1,18 @@
-{{- $cert := "" }}
-{{- $key := "" }}
 {{- $host := printf "hub-agent-controller.%s.svc" .Release.Namespace }}
-
-{{- $crtSecret := lookup "v1" "Secret" .Release.Namespace "hub-agent-certs" }}
-{{ if $crtSecret }}
-  {{- $cert = b64dec $crtSecret.data.cert  }}
-  {{- $key = b64dec $crtSecret.data.key  }}
-{{ else }}
-  {{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
-  {{- $cert = $crt.Cert  }}
-  {{- $key = $crt.Key  }}
-{{ end }}
-
+{{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.admissionWebhook.certValidity) }}
 ---
-apiVersion: v1
 kind: Secret
+apiVersion: v1
 metadata:
   name: hub-agent-certs
   namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
 data:
-  cert: {{ b64enc (trim $cert) }}
-  key: {{ b64enc (trim $key) }}
+  cert: {{ b64enc (trim $crt.Cert) }}
+  key: {{ b64enc (trim $crt.Key) }}
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
-kind: MutatingWebhookConfiguration
+kind: ValidatingWebhookConfiguration
 metadata:
   name: hub
   namespace: {{ .Release.Namespace }}
@@ -40,33 +22,36 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
 webhooks:
   - name: hub-agent.{{ .Release.Namespace }}.svc
     clientConfig:
       service:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
-        path: /
-      caBundle: {{ b64enc (trim $cert) }}
+        path: /validation
+      caBundle: {{ b64enc (trim $crt.Cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "extensions" ]
         apiVersions: [ "v1beta1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "networking.k8s.io" ]
         apiVersions: [ "v1beta1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "networking.k8s.io" ]
         apiVersions: [ "v1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "traefik.containo.us" ]
         apiVersions: [ "v1alpha1" ]
         resources: [ "ingressroutes" ]
