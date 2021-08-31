@@ -64,3 +64,7 @@ service:
 admissionWebhook:
   # The webhook certificate validity duration in days (100 years by default)
   certValidity: 36525
+
+experimental:
+  # To enable the validating webhook change to true. This flag will be removed in the future.
+  validatingWebhook: false

@@ -71,6 +71,7 @@ webhooks:
         resources: [ "ingressroutes" ]
         scope: "Namespaced"
 
+{{ if .Values.experimental.validatingWebhook }}
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -114,3 +115,4 @@ webhooks:
         apiVersions: [ "v1alpha1" ]
         resources: [ "ingressroutes" ]
         scope: "Namespaced"
+{{ end }}
