@@ -1,14 +1,31 @@
+{{- $cert := "" }}
+{{- $key := "" }}
 {{- $host := printf "hub-agent-controller.%s.svc" .Release.Namespace }}
-{{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
+
+{{- $crtSecret := lookup "v1" "Secret" .Release.Namespace "hub-agent-certs" }}
+{{ if $crtSecret }}
+  {{- $cert = b64dec $crtSecret.data.cert  }}
+  {{- $key = b64dec $crtSecret.data.key  }}
+{{ else }}
+  {{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
+  {{- $cert = $crt.Cert  }}
+  {{- $key = $crt.Key  }}
+{{ end }}
 ---
-kind: Secret
 apiVersion: v1
+kind: Secret
 metadata:
   name: hub-agent-certs
   namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 data:
-  cert: {{ b64enc (trim $crt.Cert) }}
-  key: {{ b64enc (trim $crt.Key) }}
+  cert: {{ b64enc (trim $cert) }}
+  key: {{ b64enc (trim $key) }}
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -32,7 +49,7 @@ webhooks:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
         path: /
-      caBundle: {{ b64enc (trim $crt.Cert) }}
+      caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:

@@ -28,7 +28,6 @@ jobs:
         env:
           TMPDIR: /tmp
           ARCH: amd64
-          CATTLE_HELM_UNITTEST_VERSION: v0.1.7-rancher2
 
       - name: Lint, build and test
         run: |
