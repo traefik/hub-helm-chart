@@ -7,7 +7,7 @@
   {{- $cert = b64dec $crtSecret.data.cert  }}
   {{- $key = b64dec $crtSecret.data.key  }}
 {{ else }}
-  {{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
+  {{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.admissionWebhook.certValidity) }}
   {{- $cert = $crt.Cert  }}
   {{- $key = $crt.Key  }}
 {{ end }}
@@ -66,6 +66,50 @@ webhooks:
         resources: [ "ingresses" ]
         scope: "Namespaced"
       - operations: [ "CREATE", "UPDATE", "DELETE" ]
+        apiGroups: [ "traefik.containo.us" ]
+        apiVersions: [ "v1alpha1" ]
+        resources: [ "ingressroutes" ]
+        scope: "Namespaced"
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: hub
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+webhooks:
+  - name: hub-agent.{{ .Release.Namespace }}.svc
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /validation
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions: [ "v1" ]
+    rules:
+      - operations: [ "CREATE", "UPDATE" ]
+        apiGroups: [ "extensions" ]
+        apiVersions: [ "v1beta1" ]
+        resources: [ "ingresses" ]
+        scope: "Namespaced"
+      - operations: [ "CREATE", "UPDATE" ]
+        apiGroups: [ "networking.k8s.io" ]
+        apiVersions: [ "v1beta1" ]
+        resources: [ "ingresses" ]
+        scope: "Namespaced"
+      - operations: [ "CREATE", "UPDATE" ]
+        apiGroups: [ "networking.k8s.io" ]
+        apiVersions: [ "v1" ]
+        resources: [ "ingresses" ]
+        scope: "Namespaced"
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "traefik.containo.us" ]
         apiVersions: [ "v1alpha1" ]
         resources: [ "ingressroutes" ]
