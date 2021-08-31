@@ -11,7 +11,6 @@
   {{- $cert = $crt.Cert  }}
   {{- $key = $crt.Key  }}
 {{ end }}
-
 ---
 apiVersion: v1
 kind: Secret
@@ -94,7 +93,7 @@ webhooks:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
         path: /validation
-      caBundle: {{ b64enc (trim $crt.Cert) }}
+      caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:
