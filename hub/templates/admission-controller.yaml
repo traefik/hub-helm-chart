@@ -7,7 +7,7 @@
   {{- $cert = b64dec $crtSecret.data.cert  }}
   {{- $key = b64dec $crtSecret.data.key  }}
 {{ else }}
-  {{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.mutatingWebhook.certValidity) }}
+  {{- $crt := genSelfSignedCert $host (list) (list $host) (int .Values.admissionWebhook.certValidity) }}
   {{- $cert = $crt.Cert  }}
   {{- $key = $crt.Key  }}
 {{ end }}
