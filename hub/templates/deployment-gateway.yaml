@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: gateway
   {{- with .Values.gatewayDeployment.labels }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -52,7 +53,7 @@ spec:
           args:
             - gateway
             - --token={{ required "A valid .Values.token is required." .Values.token }}
-            - --listen-addr=:443
+            - --gateway-addr=:443
             - --dns-addr=:53
           {{- with .Values.gatewayDeployment.args }}
           {{- range . }}
