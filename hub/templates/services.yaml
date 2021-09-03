@@ -78,5 +78,5 @@ spec:
       protocol: UDP
       name: hub-agent-gateway-dns
   selector:
-    app: hub-agent
-    component: gateway
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    app.kubernetes.io/component: gateway

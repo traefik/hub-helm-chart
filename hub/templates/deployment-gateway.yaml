@@ -22,13 +22,17 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hub-agent
-      component: gateway
+      app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+      app.kubernetes.io/component: gateway
   template:
     metadata:
       labels:
-        app: hub-agent
-        component: gateway
+        app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+        helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/version: {{ .Chart.Version }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: gateway
       {{- with .Values.gatewayDeployment.podLabels }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -54,6 +58,8 @@ spec:
             - gateway
             - --token={{ required "A valid .Values.token is required." .Values.token }}
             - --gateway-addr=:443
+            - --proxy-addr=hub-cluster-proxy.hub:80 # TODO: Update with template values
+            - --platform-url=http://platform.docker.localhost/agent
             - --dns-addr=:53
           {{- with .Values.gatewayDeployment.args }}
           {{- range . }}

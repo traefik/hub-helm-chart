@@ -129,3 +129,11 @@ rules:
       - deployments
     verbs:
       - update
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - create
+      - update
+      - delete
