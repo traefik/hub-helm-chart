@@ -77,6 +77,9 @@ spec:
     - port: 53
       protocol: UDP
       name: hub-agent-gateway-dns
+    - port: 443
+      protocol: TCP
+      name: hub-agent-gateway
   selector:
     app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
     app.kubernetes.io/component: gateway
