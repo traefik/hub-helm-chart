@@ -58,8 +58,6 @@ spec:
             - gateway
             - --token={{ required "A valid .Values.token is required." .Values.token }}
             - --gateway-addr=:443
-            - --proxy-addr=hub-cluster-proxy.hub:80 # TODO: Update with template values
-            - --platform-url=http://platform.docker.localhost/agent
             - --dns-addr=:53
           {{- with .Values.gatewayDeployment.args }}
           {{- range . }}
