@@ -28,7 +28,7 @@ endif
 # Execute Units Tests
 unit-test: helm-unittest
 	@echo "== Unit Testing Chart..."
-	@helm unittest --color --update-snapshot ./hub
+	@helm unittest --helm3 --color --update-snapshot ./hub
 	@echo "== Unit Tests Finished..."
 
 build: global-requirements $(DIST_DIR)
@@ -100,7 +100,7 @@ $(HELM_REPO):
 
 helm-unittest: global-requirements
 	@echo "== Checking that plugin helm-unittest is available..."
-	@helm plugin list 2>/dev/null | grep unittest >/dev/null || helm plugin install https://github.com/rancher/helm-unittest --debug
+	@helm plugin list 2>/dev/null | grep unittest >/dev/null || helm plugin install https://github.com/quintush/helm-unittest --version v0.2.7 --debug
 	@echo "== plugin helm-unittest is ready"
 
 .PHONY: all global-requirements lint-requirements helm-unittest lint build package clean full-yaml
