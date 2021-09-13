@@ -24,13 +24,13 @@ controllerDeployment:
 
 gatewayDeployment:
   # Additional deployment annotations
-  annotations: { }
+  annotations: {}
   # Additional deployment labels
-  labels: { }
+  labels: {}
   # Additional pods annotations
-  podAnnotations: { }
+  podAnnotations: {}
   # Additional pods labels
-  podLabels: { }
+  podLabels: {}
   args:
     - --log-level=debug
 
