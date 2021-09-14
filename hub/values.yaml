@@ -23,6 +23,8 @@ controllerDeployment:
     - --log-level=debug
 
 gatewayDeployment:
+  # Number of replicas
+  replicas: 2
   # Additional deployment annotations
   annotations: {}
   # Additional deployment labels
