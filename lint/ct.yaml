@@ -1,6 +1,6 @@
 chart-dirs:
   - ./
-remote: hub-agent
+remote: hub-agent-kubernetes
 target-branch: master
 debug: true
 check-version-increment: true
