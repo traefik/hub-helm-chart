@@ -1,6 +1,6 @@
 # Default values for hub-helm-chart.
 image:
-  name: ghcr.io/traefik/hub-agent
+  name: ghcr.io/traefik/hub-agent-kubernetes
   pullPolicy: Always
   pullSecrets: []
   # Overrides the image tag whose default is the chart appVersion.

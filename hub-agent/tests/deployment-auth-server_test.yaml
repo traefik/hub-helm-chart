@@ -1,22 +1,22 @@
 suite: Hub deployment
 templates:
-  - deployment-tunnel.yaml
+  - deployment-auth-server.yaml
 tests:
-  - it: should have 1 replicas
+  - it: should have 3 replicas
     asserts:
       - equal:
           path: spec.replicas
-          value: 1
+          value: 3
   - it: should change image when image.tag is specified
     set:
       image:
-        name: gcr.io/traefiklabs/hub-agent
+        name: gcr.io/traefiklabs/hub-agent-kubernetes
         tag:
           alpha2.0
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: gcr.io/traefiklabs/hub-agent:alpha2.0
+          value: gcr.io/traefiklabs/hub-agent-kubernetes:alpha2.0
   - it: should change the pullPolicy if specified
     set:
       image:
@@ -29,15 +29,15 @@ tests:
   - it: should have an image when image.name is specified
     set:
       image:
-        name: gcr.io/traefiklabs/hub-agent
+        name: gcr.io/traefiklabs/hub-agent-kubernetes
         tag: latest
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: gcr.io/traefiklabs/hub-agent:latest
-  - it: should have annotations and/or podsAnnotations when specified
+          value: gcr.io/traefiklabs/hub-agent-kubernetes:latest
+  - it: should have annotations and/or  podsAnnotations when specified
     set:
-      tunnelDeployment:
+      authServerDeployment:
         annotations:
           hub/plop: annotations
         podAnnotations:
@@ -51,11 +51,10 @@ tests:
           value: podAnnotations
   - it: should have specific label when specified
     set:
-      tunnelDeployment:
+      authServerDeployment:
         podLabels:
           custom-label: plop
     asserts:
       - equal:
           path: spec.template.metadata.labels.custom-label
           value: plop
-

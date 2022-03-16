@@ -1,11 +1,11 @@
 DIST_DIR ?= $(CURDIR)/dist
-CHART_DIR ?= $(CURDIR)/hub
+CHART_DIR ?= $(CURDIR)/hub-agent
 TMPDIR ?= /tmp
 HELM_REPO ?= $(CURDIR)/repo
 LINT_USE_DOCKER ?= true
 LINT_CMD ?= ct lint --config=lint/ct.yaml
 PROJECT ?= traefik/hub-helm-chart
-VERSION ?= $(shell cat hub/Chart.yaml | grep 'version: ' | awk '{ print $$2 }')
+VERSION ?= $(shell cat hub-agent/Chart.yaml | grep 'version: ' | awk '{ print $$2 }')
 
 ################################## Functionnal targets
 
@@ -28,7 +28,7 @@ endif
 # Execute Units Tests
 unit-test: helm-unittest
 	@echo "== Unit Testing Chart..."
-	@helm unittest --helm3 --color --update-snapshot ./hub
+	@helm unittest --helm3 --color --update-snapshot ./hub-agent
 	@echo "== Unit Tests Finished..."
 
 build: global-requirements $(DIST_DIR)
@@ -58,13 +58,13 @@ clean:
 # Generate full yaml
 full-yaml:
 	@echo "== Generating full yaml for $(VERSION)"
-	@helm template hub hub > $(DIST_DIR)/yaml/$(VERSION).yaml
+	@helm template hub-agent hub-agent > $(DIST_DIR)/yaml/$(VERSION).yaml
 
 install: global-requirements $(DIST_DIR)
-	@helm install hub $(CHART_DIR)
+	@helm install hub-agent $(CHART_DIR)
 
 uninstall: global-requirements $(DIST_DIR)
-	@helm uninstall hub $(CHART_DIR)
+	@helm uninstall hub-agent $(CHART_DIR)
 	clean
 
 global-requirements:

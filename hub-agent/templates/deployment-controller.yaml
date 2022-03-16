@@ -53,14 +53,14 @@ spec:
             {{- toYaml . | nindent 10 }}
             {{- end }}
           volumeMounts:
-            - mountPath: /var/run/hub-agent/
+            - mountPath: /var/run/hub-agent-kubernetes/
               name: hub-certs
           args:
             - controller
             - --token={{ required "A valid .Values.token is required." .Values.token }}
             - --acp-server.listen-addr=:443
-            - --acp-server.cert=/var/run/hub-agent/cert.pem
-            - --acp-server.key=/var/run/hub-agent/key.pem
+            - --acp-server.cert=/var/run/hub-agent-kubernetes/cert.pem
+            - --acp-server.key=/var/run/hub-agent-kubernetes/key.pem
             - --acp-server.auth-server-addr=http://hub-agent-auth-server.{{ .Release.Namespace }}.svc.cluster.local
           {{- with .Values.controllerDeployment.args }}
           {{- range . }}
