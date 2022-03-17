@@ -1,4 +1,4 @@
-# Hub 
+# Traefik Hub Helm Chart 
 
 ## Introduction
 
