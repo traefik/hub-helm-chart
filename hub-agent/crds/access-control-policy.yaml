@@ -42,7 +42,9 @@ spec:
                   type: object
                   properties:
                     users:
-                      type: string
+                      type: array
+                      items:
+                        type: string
                     realm:
                       type: string
                     stripAuthorizationHeader:
@@ -53,7 +55,9 @@ spec:
                   type: object
                   properties:
                     users:
-                      type: string
+                      type: array
+                      items:
+                        type: string
                     realm:
                       type: string
                     stripAuthorizationHeader:
