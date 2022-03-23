@@ -30,11 +30,11 @@ tests:
     set:
       image:
         name: gcr.io/traefiklabs/hub-agent-kubernetes
-        tag: latest
+        tag: experimental
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: gcr.io/traefiklabs/hub-agent-kubernetes:latest
+          value: gcr.io/traefiklabs/hub-agent-kubernetes:experimental
   - it: should have annotations and/or podsAnnotations when specified
     set:
       tunnelDeployment:
