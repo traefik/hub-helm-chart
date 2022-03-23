@@ -10,13 +10,13 @@ tests:
   - it: should change image when image.tag is specified
     set:
       image:
-        name: gcr.io/traefiklabs/hub-agent-kubernetes
+        name: ghcr.io/traefik/hub-agent-kubernetes
         tag:
           alpha2.0
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: gcr.io/traefiklabs/hub-agent-kubernetes:alpha2.0
+          value: ghcr.io/traefik/hub-agent-kubernetes:alpha2.0
   - it: should change the pullPolicy if specified
     set:
       image:
@@ -29,12 +29,12 @@ tests:
   - it: should have an image when image.name is specified
     set:
       image:
-        name: gcr.io/traefiklabs/hub-agent-kubernetes
+        name: ghcr.io/traefik/hub-agent-kubernetes
         tag: experimental
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: gcr.io/traefiklabs/hub-agent-kubernetes:experimental
+          value: ghcr.io/traefik/hub-agent-kubernetes:experimental
   - it: should have annotations and/or  podsAnnotations when specified
     set:
       controllerDeployment:
