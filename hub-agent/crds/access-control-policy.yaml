@@ -1,71 +1,103 @@
+
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.2
+  creationTimestamp: null
   name: accesscontrolpolicies.hub.traefik.io
 spec:
   group: hub.traefik.io
-  versions:
-    - name: v1alpha1
-      served: true
-      storage: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-              properties:
-                jwt:
-                  type: object
-                  properties:
-                    signingSecret:
-                      type: string
-                    signingSecretBase64Encoded:
-                      type: boolean
-                    publicKey:
-                      type: string
-                    jwksFile:
-                      type: string
-                    jwksUrl:
-                      type: string
-                    stripAuthorizationHeader:
-                      type: boolean
-                    forwardHeaders:
-                      type: object
-                      additionalProperties:
-                        type: string
-                    tokenQueryKey:
-                      type: string
-                    claims:
-                      type: string
-                basicAuth:
-                  type: object
-                  properties:
-                    users:
-                      type: string
-                    realm:
-                      type: string
-                    stripAuthorizationHeader:
-                      type: boolean
-                    forwardUsernameHeader:
-                      type: string
-                digestAuth:
-                  type: object
-                  properties:
-                    users:
-                      type: string
-                    realm:
-                      type: string
-                    stripAuthorizationHeader:
-                      type: boolean
-                    forwardUsernameHeader:
-                      type: string
-  scope: Namespaced
   names:
+    kind: AccessControlPolicy
+    listKind: AccessControlPolicyList
     plural: accesscontrolpolicies
     singular: accesscontrolpolicy
-    kind: AccessControlPolicy
-    categories:
-      - hub
-    shortNames:
-      - acp
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AccessControlPolicy defines an access control policy.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AccessControlPolicySpec configures an access control policy.
+            properties:
+              basicAuth:
+                description: AccessControlPolicyBasicAuth holds the HTTP basic authentication
+                  configuration.
+                properties:
+                  forwardUsernameHeader:
+                    type: string
+                  realm:
+                    type: string
+                  stripAuthorizationHeader:
+                    type: boolean
+                  users:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              digestAuth:
+                description: AccessControlPolicyDigestAuth holds the HTTP digest authentication
+                  configuration.
+                properties:
+                  forwardUsernameHeader:
+                    type: string
+                  realm:
+                    type: string
+                  stripAuthorizationHeader:
+                    type: boolean
+                  users:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              jwt:
+                description: AccessControlPolicyJWT configures a JWT access control
+                  policy.
+                properties:
+                  claims:
+                    type: string
+                  forwardHeaders:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  jwksFile:
+                    type: string
+                  jwksUrl:
+                    type: string
+                  publicKey:
+                    type: string
+                  signingSecret:
+                    type: string
+                  signingSecretBase64Encoded:
+                    type: boolean
+                  stripAuthorizationHeader:
+                    type: boolean
+                  tokenQueryKey:
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

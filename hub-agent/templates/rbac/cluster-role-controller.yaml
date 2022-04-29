@@ -32,6 +32,7 @@ rules:
       - hub.traefik.io
     resources:
       - accesscontrolpolicies
+      - edgeingresses
     verbs:
       - list
       - watch
