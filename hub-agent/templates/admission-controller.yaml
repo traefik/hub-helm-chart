@@ -45,7 +45,7 @@ webhooks:
       service:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
-        path: /acp
+        path: /ingress
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
@@ -118,7 +118,7 @@ webhooks:
       service:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
-        path: /acp/validation
+        path: /ingress/validation
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]

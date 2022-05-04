@@ -36,6 +36,9 @@ rules:
     verbs:
       - list
       - watch
+      - create
+      - update
+      - delete
   - apiGroups:
       - traefik.containo.us
     resources:
