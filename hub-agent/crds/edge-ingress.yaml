@@ -40,7 +40,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: EdgeIngress defines an access control policy.
+        description: EdgeIngress defines an edge ingress.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -88,6 +88,9 @@ spec:
               connection:
                 description: Connection is the status of the underlying connection
                   to the edge.
+                type: string
+              domain:
+                description: Domain is the Domain for accessing the exposed service.
                 type: string
               syncedAt:
                 format: date-time
