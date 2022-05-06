@@ -32,9 +32,13 @@ rules:
       - hub.traefik.io
     resources:
       - accesscontrolpolicies
+      - edgeingresses
     verbs:
       - list
       - watch
+      - create
+      - update
+      - delete
   - apiGroups:
       - traefik.containo.us
     resources:

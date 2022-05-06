@@ -31,7 +31,7 @@ data:
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: hub
+  name: hub-acp
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
@@ -45,7 +45,7 @@ webhooks:
       service:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
-        path: /
+        path: /ingress
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
@@ -73,9 +73,9 @@ webhooks:
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
-kind: ValidatingWebhookConfiguration
+kind: MutatingWebhookConfiguration
 metadata:
-  name: hub
+  name: hub-edge-ingress
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
@@ -89,7 +89,36 @@ webhooks:
       service:
         name: hub-agent-controller
         namespace: {{ .Release.Namespace }}
-        path: /validation
+        path: /edge-ingress
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions: [ "v1" ]
+    rules:
+      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+        apiGroups: [ "hub.traefik.io" ]
+        apiVersions: [ "v1alpha1" ]
+        resources: [ "edgeingresses" ]
+        scope: "Namespaced"
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: hub-acp
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+webhooks:
+  - name: hub-agent.{{ .Release.Namespace }}.svc
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /ingress/validation
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
