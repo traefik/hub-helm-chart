@@ -50,22 +50,22 @@ webhooks:
     sideEffects: None
     admissionReviewVersions: [ "v1" ]
     rules:
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "extensions" ]
         apiVersions: [ "v1beta1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "networking.k8s.io" ]
         apiVersions: [ "v1beta1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "networking.k8s.io" ]
         apiVersions: [ "v1" ]
         resources: [ "ingresses" ]
         scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
+      - operations: [ "CREATE", "UPDATE" ]
         apiGroups: [ "traefik.containo.us" ]
         apiVersions: [ "v1alpha1" ]
         resources: [ "ingressroutes" ]
@@ -168,7 +168,6 @@ webhooks:
     admissionReviewVersions: [ "v1" ]
     rules:
       - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "traefik.containo.us" ]
+        apiGroups: [ "hub.traefik.io" ]
         apiVersions: [ "v1alpha1" ]
         resources: [ "accesscontrolpolicies" ]
-        scope: "Namespaced"
