@@ -21,6 +21,7 @@ controllerDeployment:
   podLabels: {}
   args:
     - --log-level=debug
+    - --traefik.metrics-url=http://traefik.hub.svc.cluster.local:8080/metrics
 
 authServerDeployment:
   # Number of replicas
@@ -51,6 +52,8 @@ tunnelDeployment:
   podLabels: {}
   args:
     - --log-level=debug
+    - --traefik.tunnel-host=traefik-tunnel
+    - --traefik.tunnel-port=9901
 
 resources: {}
   # requests:
