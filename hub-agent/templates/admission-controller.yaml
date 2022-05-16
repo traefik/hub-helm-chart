@@ -48,28 +48,49 @@ webhooks:
         path: /ingress
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
-    admissionReviewVersions: [ "v1" ]
+    admissionReviewVersions:
+      - v1
     rules:
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "extensions" ]
-        apiVersions: [ "v1beta1" ]
-        resources: [ "ingresses" ]
-        scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "networking.k8s.io" ]
-        apiVersions: [ "v1beta1" ]
-        resources: [ "ingresses" ]
-        scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "networking.k8s.io" ]
-        apiVersions: [ "v1" ]
-        resources: [ "ingresses" ]
-        scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "traefik.containo.us" ]
-        apiVersions: [ "v1alpha1" ]
-        resources: [ "ingressroutes" ]
-        scope: "Namespaced"
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - extensions
+        apiVersions:
+          - v1beta1
+        resources:
+          - ingresses
+        scope: Namespaced
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - networking.k8s.io
+        apiVersions:
+          - v1beta1
+        resources:
+          - ingresses
+        scope: Namespaced
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - networking.k8s.io
+        apiVersions:
+          - v1
+        resources:
+          - ingresses
+        scope: Namespaced
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - traefik.containo.us
+        apiVersions:
+          - v1alpha1
+        resources:
+          - ingressroutes
+        scope: Namespaced
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -92,13 +113,20 @@ webhooks:
         path: /edge-ingress
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
-    admissionReviewVersions: [ "v1" ]
+    admissionReviewVersions:
+      - v1
     rules:
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "hub.traefik.io" ]
-        apiVersions: [ "v1alpha1" ]
-        resources: [ "edgeingresses" ]
-        scope: "Namespaced"
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - edgeingresses
+        scope: Namespaced
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -121,28 +149,49 @@ webhooks:
         path: /ingress/validation
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
-    admissionReviewVersions: [ "v1" ]
+    admissionReviewVersions:
+      - v1
     rules:
-      - operations: [ "CREATE", "UPDATE" ]
-        apiGroups: [ "extensions" ]
-        apiVersions: [ "v1beta1" ]
-        resources: [ "ingresses" ]
-        scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE" ]
-        apiGroups: [ "networking.k8s.io" ]
-        apiVersions: [ "v1beta1" ]
-        resources: [ "ingresses" ]
-        scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE" ]
-        apiGroups: [ "networking.k8s.io" ]
-        apiVersions: [ "v1" ]
-        resources: [ "ingresses" ]
-        scope: "Namespaced"
-      - operations: [ "CREATE", "UPDATE" ]
-        apiGroups: [ "traefik.containo.us" ]
-        apiVersions: [ "v1alpha1" ]
-        resources: [ "ingressroutes" ]
-        scope: "Namespaced"
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - extensions
+        apiVersions:
+          - v1beta1
+        resources:
+          - ingresses
+        scope: Namespaced
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - networking.k8s.io
+        apiVersions:
+          - v1beta1
+        resources:
+          - ingresses
+        scope: Namespaced
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - networking.k8s.io
+        apiVersions:
+          - v1
+        resources:
+          - ingresses
+        scope: Namespaced
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - traefik.containo.us
+        apiVersions:
+          - v1alpha1
+        resources:
+          - ingressroutes
+        scope: Namespaced
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -165,10 +214,16 @@ webhooks:
         path: /acp
       caBundle: {{ b64enc (trim $cert) }}
     sideEffects: None
-    admissionReviewVersions: [ "v1" ]
+    admissionReviewVersions:
+      - v1
     rules:
-      - operations: [ "CREATE", "UPDATE", "DELETE" ]
-        apiGroups: [ "traefik.containo.us" ]
-        apiVersions: [ "v1alpha1" ]
-        resources: [ "accesscontrolpolicies" ]
-        scope: "Namespaced"
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - accesscontrolpolicies
