@@ -1,4 +1,4 @@
-# Traefik Hub Helm Chart 
+# Traefik Hub Helm Chart
 
 ## Introduction
 
@@ -32,10 +32,10 @@ helm install hub-agent traefik-hub/hub-agent
 ### Deploying Hub with a full-yaml
 
 ```bash
-kubectl apply -f https://traefik.github.io/hub-helm-chart/yaml/0.15.0.yaml
+kubectl apply -f https://traefik.github.io/hub-helm-chart/yaml/0.15.1.yaml
 ```
 
-### Specifications 
+### Specifications
 
 If you want to install the hub-agent in a specific namespace, you need to:
 - Create the specific namespace:
