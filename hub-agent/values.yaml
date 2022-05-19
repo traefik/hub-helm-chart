@@ -20,8 +20,8 @@ controllerDeployment:
   # Additional pods labels
   podLabels: {}
   # Traefik metrics configuration
-  traefik:
-    metricsURL: http://traefik.hub-agent.svc.cluster.local:9100/metrics
+#  traefik:
+#    metricsURL: http://traefik.hub-agent.svc.cluster.local:9100/metrics
   args:
     - --log-level=debug
 
@@ -53,9 +53,9 @@ tunnelDeployment:
   # Additional pods labels
   podLabels: {}
   # Traefik tunnel configuration
-  traefik:
-    tunnelHost: traefik.hub-agent.svc.cluster.local
-    tunnelPort: 9901
+#  traefik:
+#    tunnelHost: traefik.hub-agent.svc.cluster.local
+#    tunnelPort: 9901
   args:
     - --log-level=debug
 

@@ -62,7 +62,11 @@ spec:
             - --acp-server.cert=/var/run/hub-agent-kubernetes/cert.pem
             - --acp-server.key=/var/run/hub-agent-kubernetes/key.pem
             - --acp-server.auth-server-addr=http://hub-agent-auth-server.{{ .Release.Namespace }}.svc.cluster.local
-            - --traefik.metrics-url={{ required "A valid .Values.controllerDeployment.traefik.metricsURL is required." .Values.controllerDeployment.traefik.metricsURL }}
+            {{- if .Values.controllerDeployment.traefik -}}
+            {{- if .Values.controllerDeployment.traefik.metricsURL -}}
+            - --traefik.metrics-url={{ .Values.controllerDeployment.traefik.metricsURL }}
+            {{- end -}}
+            {{- end -}}
           {{- with .Values.controllerDeployment.args }}
           {{- range . }}
             - {{ . | quote }}
