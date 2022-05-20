@@ -53,14 +53,8 @@ spec:
           args:
             - tunnel
             - --token={{ required "A valid .Values.token is required." .Values.token }}
-            {{- if .Values.tunnelDeployment.traefik -}}
-            {{- if .Values.tunnelDeployment.traefik.tunnelHost -}}
-            - --traefik.tunnel-host={{ .Values.tunnelDeployment.traefik.tunnelHost -}}
-            {{- end -}}
-            {{- if .Values.tunnelDeployment.traefik.tunnelPort -}}
-            - --traefik.tunnel-port={{ .Values.tunnelDeployment.traefik.tunnelPort -}}
-            {{- end -}}
-            {{- end -}}
+            - --traefik.tunnel-host={{ required "A valid .Values.tunnelDeployment.traefik.tunnelHost is required." .Values.tunnelDeployment.traefik.tunnelHost }}
+            - --traefik.tunnel-port={{ .Values.tunnelDeployment.traefik.tunnelPort }}
           {{- with .Values.tunnelDeployment.args }}
           {{- range . }}
             - {{ . | quote }}
