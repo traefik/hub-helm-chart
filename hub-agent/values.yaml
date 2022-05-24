@@ -20,8 +20,8 @@ controllerDeployment:
   # Additional pods labels
   podLabels: {}
   # Traefik metrics configuration
-#  traefik:
-#    metricsURL: http://traefik.hub-agent.svc.cluster.local:9100/metrics
+  traefik:
+    metricsURL: http://traefik-hub.hub-agent.svc.cluster.local:9100/metrics
   args:
     - --log-level=debug
 
@@ -82,6 +82,9 @@ service:
   annotations: {}
   # Additional service labels
   labels: {}
+
+catchAllService:
+  externalName: hub-preview.traefik.io
 
 admissionWebhook:
   # The webhook certificate validity duration in days (100 years by default)

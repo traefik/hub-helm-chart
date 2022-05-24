@@ -1,0 +1,18 @@
+suite: catch all service configuration
+templates:
+  - catch-all-service.yaml
+tests:
+  - it: should have the external name set
+    set:
+      catchAllService:
+          externalName: plop
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.annotations
+          value:
+            traefik.ingress.kubernetes.io/service.passhostheader: "false"
+      - equal:
+          path: spec.externalName
+          value: plop
