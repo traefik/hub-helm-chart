@@ -21,7 +21,7 @@ controllerDeployment:
   podLabels: {}
   # Traefik metrics configuration
   traefik:
-    metricsURL: http://traefik.hub-agent.svc.cluster.local:9100/metrics
+    metricsURL: http://traefik-hub.hub-agent.svc.cluster.local:9100/metrics
   args:
     - --log-level=debug
 
