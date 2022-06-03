@@ -50,21 +50,6 @@ spec:
                         type: string
                       type: array
                   type: object
-                digestAuth:
-                  description: AccessControlPolicyDigestAuth holds the HTTP digest authentication
-                    configuration.
-                  properties:
-                    forwardUsernameHeader:
-                      type: string
-                    realm:
-                      type: string
-                    stripAuthorizationHeader:
-                      type: boolean
-                    users:
-                      items:
-                        type: string
-                      type: array
-                  type: object
                 jwt:
                   description: AccessControlPolicyJWT configures a JWT access control
                     policy.
