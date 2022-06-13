@@ -1,7 +1,7 @@
 apiVersion: v2
 name: hub-agent
-version: 0.18.0
-appVersion: "0.1.0"
+version: 0.19.0
+appVersion: "0.2.0"
 # Because of https://github.com/helm/helm/issues/3810 the pre-release version suffix has to be define.
 # This allows the installation on Kubernetes cluster with a pre-release version (e.g. v1.19.9-gke.1900)
 kubeVersion: ">= 1.14.0-0"
