@@ -2,7 +2,8 @@
 
 ## Introduction
 
-This chart installs the Hub agent in a Kubernetes cluster. The agent consists of two deployments: a controller and multiple authentication servers.
+This chart installs the Hub agent in a Kubernetes cluster.
+The agent consists of two deployments: a controller and multiple authentication servers.
 
 ## Installation
 
@@ -38,11 +39,13 @@ kubectl apply -f https://traefik.github.io/hub-helm-chart/yaml/0.18.0.yaml
 ### Specifications
 
 If you want to install the hub-agent in a specific namespace, you need to:
+
 - Create the specific namespace:
 
 ```bash
 kubectl create namespace hub
 ```
+
 - Then launch the installation with the imperative argument --namespace:
 
 ```bash
@@ -66,7 +69,8 @@ We consider in this example the version install being <hub>:
 ```bash
 helm uninstall hub-agent
 ```
-If hub-agent was install in a specific namespace
+
+If hub-agent was installed in a specific namespace
 
 ```bash
 helm uninstall hub-agent --namespace hub-namespace
