@@ -4,7 +4,7 @@ image:
   pullPolicy: Always
   pullSecrets: []
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.2.0"
+  tag: "v0.4.0"
 
 # User token to access to hub
 token: "plop"
