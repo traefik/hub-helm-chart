@@ -58,4 +58,15 @@ tests:
       - equal:
           path: spec.template.metadata.labels.custom-label
           value: plop
-
+  - it: should add additional env vars to controller when specified
+    set:
+      controllerDeployment:
+        env:
+        - name: "TEST_ENV_VAR"
+          value: "testvalue"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[1]
+          value:
+            name: TEST_ENV_VAR
+            value: testvalue

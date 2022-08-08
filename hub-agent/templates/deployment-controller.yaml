@@ -46,6 +46,10 @@ spec:
           env:
             - name: DISABLE_GIT_SSL_VERIFY
               value: "true"
+            {{- range .Values.controllerDeployment.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
