@@ -24,6 +24,9 @@ controllerDeployment:
     metricsURL: http://traefik-hub.hub-agent.svc.cluster.local:9100/metrics
   args:
     - --log-level=debug
+  # env:
+  #   - name: "LOG_LEVEL"
+  #     value: "trace"
 
 authServerDeployment:
   # Number of replicas
@@ -84,7 +87,7 @@ service:
   labels: {}
 
 catchAllService:
-  externalName: hub-preview.traefik.io
+  externalName: hub.traefik.io
 
 admissionWebhook:
   # The webhook certificate validity duration in days (100 years by default)
