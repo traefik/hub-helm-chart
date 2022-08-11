@@ -103,10 +103,19 @@ spec:
                     items:
                       type: string
                     type: array
-                  secretName:
-                    description: SecretName is the name of the referenced Kubernetes
-                      Secret to specify the acp secret data.
-                    type: string
+                  secret:
+                    description: SecretReference represents a Secret Reference. It
+                      has enough information to retrieve secret in any namespace
+                    properties:
+                      name:
+                        description: Name is unique within a namespace to reference
+                          a secret resource.
+                        type: string
+                      namespace:
+                        description: Namespace defines the space within which the
+                          secret name must be unique.
+                        type: string
+                    type: object
                   session:
                     description: Session holds session configuration.
                     properties:
