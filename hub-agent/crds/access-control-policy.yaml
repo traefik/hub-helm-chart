@@ -87,8 +87,6 @@ spec:
                     type: string
                   clientId:
                     type: string
-                  clientSecret:
-                    type: string
                   forwardHeaders:
                     additionalProperties:
                       type: string
@@ -127,8 +125,6 @@ spec:
                         type: boolean
                       sameSite:
                         type: string
-                      secret:
-                        type: string
                       secure:
                         type: boolean
                     type: object
@@ -140,8 +136,6 @@ spec:
                       path:
                         type: string
                       sameSite:
-                        type: string
-                      secret:
                         type: string
                       secure:
                         type: boolean
