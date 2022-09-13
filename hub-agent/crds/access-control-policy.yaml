@@ -178,7 +178,7 @@ spec:
                       type: string
                     secret:
                       description: SecretReference represents a Secret Reference. It
-                        has enough information to retrieve secret in any namespace
+                        has enough information to retrieve secret in any namespace.
                       properties:
                         name:
                           description: Name is unique within a namespace to reference
