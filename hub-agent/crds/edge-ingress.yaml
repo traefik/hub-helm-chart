@@ -27,12 +27,8 @@ spec:
       name: ACP
       priority: 1
       type: string
-    - jsonPath: .spec.acp.namespace
-      name: ACP Namespace
-      priority: 1
-      type: string
-    - jsonPath: .status.url
-      name: URL
+    - jsonPath: .status.urls
+      name: URLs
       type: string
     - jsonPath: .status.connection
       name: Connection
@@ -90,14 +86,19 @@ spec:
               domain:
                 description: Domain is the Domain for accessing the exposed service.
                 type: string
+              customDomains:
+                description: CustomDomains is the list of custom domains for accessing the exposed service.
+                type: array
+                items:
+                  type: string
               specHash:
                 description: SpecHash is a hash representing the the EdgeIngressSpec
                 type: string
               syncedAt:
                 format: date-time
                 type: string
-              url:
-                description: URL is the URL for accessing the exposed service.
+              urls:
+                description: URLs is the list of coma separated URL for accessing the exposed service.
                 type: string
               version:
                 type: string
