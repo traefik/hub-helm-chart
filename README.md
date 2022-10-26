@@ -33,7 +33,7 @@ helm install hub-agent traefik-hub/hub-agent
 ### Deploying Hub with a full-yaml
 
 ```bash
-kubectl apply -f https://traefik.github.io/hub-helm-chart/yaml/0.20.2.yaml
+kubectl apply -f https://traefik.github.io/hub-helm-chart/yaml/1.0.0.yaml
 ```
 
 ### Specifications
