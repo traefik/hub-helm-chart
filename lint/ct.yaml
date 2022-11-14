@@ -1,6 +1,0 @@
-chart-dirs:
-  - ./
-remote: hub-agent
-target-branch: master
-debug: true
-check-version-increment: true

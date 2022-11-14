@@ -15,7 +15,7 @@ With the command `helm version`, make sure that you have:
 Add Hub's chart repository to Helm:
 
 ```bash
-helm repo add traefik-hub https://helm.traefik.io/hub
+helm repo add traefik https://traefik.github.io/charts
 ```
 
 You can update the chart repository by running:
@@ -27,7 +27,7 @@ helm repo update
 ### Deploying Hub
 
 ```bash
-helm install hub-agent traefik-hub/hub-agent
+helm install hub-agent traefik/hub-agent
 ```
 
 ### Deploying Hub with a full-yaml
@@ -49,17 +49,13 @@ kubectl create namespace hub
 - Then launch the installation with the imperative argument --namespace:
 
 ```bash
-helm install hub-agent traefik-hub/hub-agent --namespace hub
+helm install hub-agent traefik/hub-agent --namespace hub
 ```
 
 ### Launch unit tests
 
-You need the helm-plugin: https://github.com/rancher/helm-unittest
-
-Then:
-
 ```bash
-helm unittest hub-agent/
+make test
 ```
 
 ### Uninstall
