@@ -44,6 +44,15 @@ spec:
       {{- end }}
       containers:
         - name: hub-agent-tunnel
+          env:
+            {{- if .Values.tokenSecretRef }}
+            - name: HUB_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- with .Values.tokenSecretRef }}
+                  {{- toYaml . | nindent 18 }}
+                  {{- end -}}
+            {{- end }}
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
@@ -52,14 +61,18 @@ spec:
             {{- end }}
           args:
             - tunnel
-            - --token={{ required "A valid .Values.token is required." .Values.token }}
+            {{ if .Values.tokenSecretRef -}}
+            - --token=$(HUB_SECRET_TOKEN)
+            {{ else -}}
+            - --token={{ required "A valid .Values.token or .Values.tokenSecretRef is required." .Values.token }}
+            {{ end -}}
             - --traefik.tunnel-host={{ required "A valid .Values.tunnelDeployment.traefik.tunnelHost is required." .Values.tunnelDeployment.traefik.tunnelHost }}
             - --traefik.tunnel-port={{ .Values.tunnelDeployment.traefik.tunnelPort }}
-          {{- with .Values.tunnelDeployment.args }}
+          {{- with .Values.tunnelDeployment.args -}}
           {{- range . }}
             - {{ . | quote }}
-          {{- end }}
-          {{- end }}
+          {{ end }}
+          {{ end }}
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

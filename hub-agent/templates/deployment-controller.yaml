@@ -50,6 +50,14 @@ spec:
             - name: {{ .name }}
               value: {{ .value }}
             {{- end }}
+            {{- if .Values.tokenSecretRef }}
+            - name: HUB_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- with .Values.tokenSecretRef }}
+                  {{- toYaml . | nindent 18 }}
+                  {{- end -}}
+            {{- end }}
           image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
@@ -61,18 +69,22 @@ spec:
               name: hub-certs
           args:
             - controller
-            - --token={{ required "A valid .Values.token is required." .Values.token }}
+            {{ if .Values.tokenSecretRef -}}
+            - --token=$(HUB_SECRET_TOKEN)
+            {{ else -}}
+            - --token={{ required "A valid .Values.token or .Values.tokenSecretRef is required." .Values.token }}
+            {{ end -}}
             - --acp-server.listen-addr=:443
             - --acp-server.cert=/var/run/hub-agent-kubernetes/cert.pem
             - --acp-server.key=/var/run/hub-agent-kubernetes/key.pem
             - --acp-server.auth-server-addr=http://hub-agent-auth-server.{{ .Release.Namespace }}.svc.cluster.local
-            {{ if .Values.controllerDeployment.traefik }}
-            {{ if .Values.controllerDeployment.traefik.metricsURL }}
+            {{ if .Values.controllerDeployment.traefik -}}
+            {{ if .Values.controllerDeployment.traefik.metricsURL -}}
             - --traefik.metrics-url={{ .Values.controllerDeployment.traefik.metricsURL }}
-            {{ end }}
-            {{ end }}
-          {{- with .Values.controllerDeployment.args }}
-          {{- range . }}
+            {{ end -}}
+            {{ end -}}
+          {{- with .Values.controllerDeployment.args -}}
+          {{- range . -}}
             - {{ . | quote }}
           {{- end }}
           {{- end }}

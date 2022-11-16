@@ -1,0 +1,6 @@
+Hub Agent {{ .Chart.AppVersion }} has been deployed successfully
+on the {{ .Release.Namespace }} namespace!
+
+{{- if and .Values.tokenSecretRef .Values.token }}
+WARNING: both `tokenSecretRef` and `token` has been set, the value in `token` will be ignored.
+{{- end }}

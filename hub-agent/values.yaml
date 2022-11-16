@@ -7,7 +7,12 @@ image:
   tag: "v1.0.0"
 
 # User token to access to hub
-token: "plop"
+token: ""
+
+# You can reference a secret for the Hub Token, this takes precedence over `token`
+# tokenSecretRef:
+#    name: hub-token
+#    key: token
 
 controllerDeployment:
   # Additional deployment annotations
