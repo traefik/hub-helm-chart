@@ -105,3 +105,17 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].args[1]
           value: --token=$(HUB_SECRET_TOKEN)
+  - it: should set args for tunnel
+    set:
+      token: test
+      tunnelDeployment:
+        args:
+        - --log-level=debug
+        - --platform-url=https://hub.traefik.io/agent
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args[4]
+          value: --log-level=debug
+      - equal:
+          path: spec.template.spec.containers[0].args[5]
+          value: --platform-url=https://hub.traefik.io/agent
