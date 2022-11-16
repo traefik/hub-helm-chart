@@ -3,6 +3,8 @@ templates:
   - deployment-tunnel.yaml
 tests:
   - it: should have 1 replicas
+    set:
+      token: "test"
     asserts:
       - equal:
           path: spec.replicas
@@ -13,6 +15,7 @@ tests:
         name: ghcr.io/traefik/hub-agent-kubernetes
         tag:
           alpha2.0
+      token: "test"
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
@@ -22,6 +25,7 @@ tests:
       image:
         pullPolicy:
           Always
+      token: "test"
     asserts:
       - equal:
           path: spec.template.spec.containers[0].imagePullPolicy
@@ -31,6 +35,7 @@ tests:
       image:
         name: ghcr.io/traefik/hub-agent-kubernetes
         tag: experimental
+      token: "test"
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
@@ -42,6 +47,7 @@ tests:
           hub/plop: annotations
         podAnnotations:
           hub/plop: podAnnotations
+      token: "test"
     asserts:
       - equal:
           path: metadata.annotations.hub/plop
@@ -54,8 +60,48 @@ tests:
       tunnelDeployment:
         podLabels:
           custom-label: plop
+      token: "test"
     asserts:
       - equal:
           path: spec.template.metadata.labels.custom-label
           value: plop
-
+  - it: should set token env var when secretRef set
+    set:
+      tokenSecretRef:
+        name: hub-token
+        key: token
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0]
+          value:
+            name: HUB_SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: hub-token
+                key: token
+  - it: should set args when secretRef set
+    set:
+      tokenSecretRef:
+        name: hub-token
+        key: token
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args[1]
+          value: --token=$(HUB_SECRET_TOKEN)
+  - it: should set token when set
+    set:
+      token: "test"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args[1]
+          value: --token=test
+  - it: should ignore token when secretRef set
+    set:
+      token: "test"
+      tokenSecretRef:
+        name: hub-token
+        key: token
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args[1]
+          value: --token=$(HUB_SECRET_TOKEN)
