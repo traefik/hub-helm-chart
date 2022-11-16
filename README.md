@@ -30,26 +30,14 @@ helm repo update
 helm install hub-agent traefik/hub-agent
 ```
 
-### Deploying Hub with a full-yaml
-
-```bash
-kubectl apply -f https://traefik.github.io/hub-helm-chart/yaml/1.0.0.yaml
-```
-
 ### Specifications
 
 If you want to install the hub-agent in a specific namespace, you need to:
 
-- Create the specific namespace:
+- Then launch the installation with the imperative argument --namespace and --create-namespace:
 
 ```bash
-kubectl create namespace hub
-```
-
-- Then launch the installation with the imperative argument --namespace:
-
-```bash
-helm install hub-agent traefik/hub-agent --namespace hub
+helm install hub-agent traefik/hub-agent --namespace hub --create-namespace
 ```
 
 ### Launch unit tests
@@ -59,8 +47,6 @@ make test
 ```
 
 ### Uninstall
-
-We consider in this example the version install being <hub>:
 
 ```bash
 helm uninstall hub-agent

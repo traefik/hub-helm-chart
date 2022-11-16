@@ -1,6 +1,8 @@
 Hub Agent {{ .Chart.AppVersion }} has been deployed successfully
 on the {{ .Release.Namespace }} namespace!
 
+You can read more about configuring Traefik to work with Hub in the documentation https://doc.traefik.io/traefik/traefik-hub/
+
 {{- if and .Values.tokenSecretRef .Values.token }}
 WARNING: both `tokenSecretRef` and `token` has been set, the value in `token` will be ignored.
 {{- end }}
