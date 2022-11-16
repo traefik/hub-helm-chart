@@ -9,44 +9,40 @@ The agent consists of two deployments: a controller and multiple authentication 
 
 ### Prerequisites
 
-With the command `helm version`, make sure that you have:
-- Helm v3 [installed](https://helm.sh/docs/using_helm/#installing-helm)
+1. [x] Helm **v3** [installed](https://helm.sh/docs/using_helm/#installing-helm): `helm version`
+2. [x] Traefik's chart repository: `helm repo add traefik https://traefik.github.io/charts`
 
-Add Hub's chart repository to Helm:
-
-```bash
-helm repo add traefik https://traefik.github.io/charts
-```
-
-You can update the chart repository by running:
-
-```bash
-helm repo update
-```
-
-### Deploying Hub
+### Deploying Hub Agent for Kubernetes
 
 ```bash
 helm install hub-agent traefik/hub-agent
 ```
 
-### Specifications
+You can customize the install with a `values` file. There are some [EXAMPLES](./EXAMPLES.md) provided.
+Complete documentation on all parameters is in the [default file](./hub-agent/values.yaml)
 
-If you want to install the hub-agent in a specific namespace, you need to:
+## Upgrading Hub Agent for Kubernetes
 
-- Then launch the installation with the imperative argument --namespace and --create-namespace:
-
-```bash
-helm install hub-agent traefik/hub-agent --namespace hub --create-namespace
-```
-
-### Launch unit tests
+One can check what has changed in the [Releases](https://github.com/traefik/hub-helm-chart/releases).
 
 ```bash
-make test
+# Update repository
+helm repo update
+# See current Chart & Hub Agent version
+helm search repo traefik/hub-agent
+# Upgrade Hub Agent
+helm upgrade hub-agent traefik/hub-agent
 ```
 
-### Uninstall
+### Upgrading CRDs
+
+With Helm v3, CRDs created by this chart can not be updated, cf the [Helm Documentation on CRDs](https://helm.sh/docs/chart_best_practices/custom_resource_definitions). Please read carefully release notes of this chart before upgrading CRDs.
+
+```bash
+kubectl apply --server-side --force-conflicts -k https://github.com/traefik/hub-helm-chart/hub-agent/crds/
+```
+
+## Uninstall
 
 ```bash
 helm uninstall hub-agent
@@ -56,4 +52,12 @@ If hub-agent was installed in a specific namespace
 
 ```bash
 helm uninstall hub-agent --namespace hub-namespace
+```
+
+## Contributing 
+
+### Launch unit tests
+
+```bash
+make test
 ```
