@@ -84,7 +84,7 @@ spec:
             {{ end -}}
             {{ end -}}
           {{- with .Values.controllerDeployment.args -}}
-          {{- range . -}}
+          {{ range . }}
             - {{ . | quote }}
           {{- end }}
           {{- end }}

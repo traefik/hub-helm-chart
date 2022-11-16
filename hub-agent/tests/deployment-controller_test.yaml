@@ -118,3 +118,17 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].args[1]
           value: --token=$(HUB_SECRET_TOKEN)
+  - it: should set args for controller
+    set:
+      token: test
+      controllerDeployment:
+        args:
+        - --log-level=debug
+        - --platform-url=https://hub.traefik.io/agent
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args[7]
+          value: --log-level=debug
+      - equal:
+          path: spec.template.spec.containers[0].args[8]
+          value: --platform-url=https://hub.traefik.io/agent
