@@ -53,7 +53,7 @@ spec:
                   {{- toYaml . | nindent 18 }}
                   {{- end -}}
             {{- end }}
-          image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
+          image: {{ template "hub-helm-chart.image-name" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- with .Values.resources }}

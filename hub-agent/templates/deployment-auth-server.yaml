@@ -46,7 +46,7 @@ spec:
           env:
             - name: DISABLE_GIT_SSL_VERIFY
               value: "true"
-          image: "{{ .Values.image.name }}:{{default .Chart.AppVersion .Values.image.tag }}"
+          image: {{ template "hub-helm-chart.image-name" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:
             httpGet:
