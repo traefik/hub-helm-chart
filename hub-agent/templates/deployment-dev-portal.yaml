@@ -1,0 +1,92 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hub-agent-dev-portal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  {{- with .Values.devPortalDeployment.labels }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  annotations:
+  {{- with .Values.devPortalDeployment.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.devPortalDeployment.replicas }}
+  selector:
+    matchLabels:
+      app: hub-agent
+      component: dev-portal
+  template:
+    metadata:
+      labels:
+        app: hub-agent
+        component: dev-portal
+      {{- with .Values.devPortalDeployment.podLabels }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      annotations:
+      {{- with .Values.devPortalDeployment.podAnnotations }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: hub-agent-dev-portal
+      automountServiceAccountToken: true
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: hub-agent-dev-portal
+          env:
+            - name: DISABLE_GIT_SSL_VERIFY
+              value: "true"
+          image: {{ template "hub-helm-chart.image-name" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          readinessProbe:
+            httpGet:
+              path: /_ready
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /_live
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          resources:
+          {{- with .Values.resources }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            seccompProfile:
+              type: RuntimeDefault
+          args:
+            - dev-portal
+            - --listen-addr=:80
+            {{- with .Values.devPortalDeployment.args }}
+            {{- range . }}
+            - {{ . | quote }}
+              {{- end }}
+              {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+  {{- toYaml . | nindent 8 }}
+  {{- end }}

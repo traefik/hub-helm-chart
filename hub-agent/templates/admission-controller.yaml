@@ -146,3 +146,122 @@ webhooks:
           - v1alpha1
         resources:
           - accesscontrolpolicies
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: hub-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+webhooks:
+  - name: hub-agent.{{ .Release.Namespace }}.portal
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /api-portal
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - apiportals
+  - name: hub-agent.{{ .Release.Namespace }}.gateway
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /api-gateway
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - apigateways
+  - name: hub-agent.{{ .Release.Namespace }}.api
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /api
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - apis
+  - name: hub-agent.{{ .Release.Namespace }}.collection
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /api-collection
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - apicollections
+  - name: hub-agent.{{ .Release.Namespace }}.access
+    clientConfig:
+      service:
+        name: hub-agent-controller
+        namespace: {{ .Release.Namespace }}
+        path: /api-access
+      caBundle: {{ b64enc (trim $cert) }}
+    sideEffects: None
+    admissionReviewVersions:
+      - v1
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+          - DELETE
+        apiGroups:
+          - hub.traefik.io
+        apiVersions:
+          - v1alpha1
+        resources:
+          - apiaccesses

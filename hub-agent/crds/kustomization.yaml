@@ -5,3 +5,7 @@ resources:
   - access-control-policy.yaml
   - edge-ingress.yaml
   - ingress-class.yaml
+  - api-accesses.yaml
+  - api-collections.yaml
+  - api-gateways.yaml
+  - api-portals.yaml

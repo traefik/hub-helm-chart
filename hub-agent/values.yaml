@@ -67,6 +67,21 @@ tunnelDeployment:
   args:
     - --log-level=debug
 
+devPortalDeployment:
+  # Number of replicas
+  replicas: 3
+  # Additional deployment annotations
+  annotations:
+    hub.traefik.io/ingress-controller: none
+  # Additional deployment labels
+  labels: {}
+  # Additional pods annotations
+  podAnnotations: {}
+  # Additional pods labels
+  podLabels: {}
+  args:
+    - --log-level=debug
+
 resources: {}
   # requests:
   #   cpu: "100m"

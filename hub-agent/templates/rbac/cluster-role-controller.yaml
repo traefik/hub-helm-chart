@@ -21,12 +21,19 @@ rules:
     resources:
       - accesscontrolpolicies
       - edgeingresses
+      - apis
+      - apiaccesses
+      - apicollections
+      - apigateways
+      - apiportals
     verbs:
       - list
       - watch
       - create
       - update
+      - patch
       - delete
+      - get
   - apiGroups:
       - traefik.containo.us
     resources:

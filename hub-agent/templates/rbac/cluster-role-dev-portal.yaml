@@ -1,0 +1,24 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hub-agent-dev-portal
+  labels:
+    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+rules:
+  # Access Control RBACs.
+  - resources:
+      - apiportals
+      - apis
+      - apicollections
+      - apiaccesses
+      - apigateways
+    apiGroups:
+      - hub.traefik.io
+    verbs:
+      - list
+      - watch
