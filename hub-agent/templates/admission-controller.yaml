@@ -18,11 +18,7 @@ metadata:
   name: hub-agent-certs
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
 data:
   cert: {{ b64enc (trim $cert) }}
   key: {{ b64enc (trim $key) }}
@@ -34,11 +30,7 @@ metadata:
   name: hub-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
 webhooks:
   - name: hub-agent.{{ .Release.Namespace }}.svc
     clientConfig:
@@ -99,11 +91,7 @@ metadata:
   name: hub-edge-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
 webhooks:
   - name: hub-agent.{{ .Release.Namespace }}.svc
     clientConfig:
@@ -135,11 +123,7 @@ metadata:
   name: hub-acp
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
 webhooks:
   - name: hub-agent.{{ .Release.Namespace }}.svc
     clientConfig:
