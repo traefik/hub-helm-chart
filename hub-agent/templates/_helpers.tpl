@@ -37,3 +37,23 @@ Create chart name and version as used by the chart label.
 {{- define "hub-helm-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
+
+
+
+{{/* Shared labels used for selector*/}}
+{{/* This is an immutable field: this should not change between upgrade */}}
+{{- define "hub-helm-chart.labelselector" -}}
+app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+
+{{/* Shared labels used in metadata */}}
+{{- define "hub-helm-chart.labels" -}}
+{{ include "hub-helm-chart.labelselector" . }}
+app.kubernetes.io/version: {{ .Chart.Version }}
+{{- if not .Values.withoutHelmLabels }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
+{{- end }}
+{{- end }}

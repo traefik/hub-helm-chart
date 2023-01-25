@@ -4,11 +4,7 @@ kind: ClusterRoleBinding
 metadata:
   name: {{ include "hub-helm-chart.fullname" . }}-controller
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -23,11 +19,7 @@ kind: ClusterRoleBinding
 metadata:
   name: {{ include "hub-helm-chart.fullname" . }}-auth-server
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

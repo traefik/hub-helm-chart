@@ -5,11 +5,7 @@ metadata:
   name: hub-agent-tunnel
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ template "hub-helm-chart.name" . }}
-    helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/version: {{ .Chart.Version }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+  {{- include "hub-helm-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: tunnel
   {{- with .Values.tunnelDeployment.labels }}
   {{- toYaml . | nindent 4 }}
