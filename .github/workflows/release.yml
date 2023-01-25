@@ -29,11 +29,6 @@ jobs:
             cp ./README.md ./hub-agent/README.md
             cp ./LICENSE ./hub-agent/LICENSE
 
-      - name: Generate default static install
-        run: |
-          kustomize build hub-agent/crds > hub-agent.yaml
-          helm template traefik-hub --namespace hub-agent --set tokenSecretRef.name=hub-token --set tokenSecretRef.key=token --set withoutHelmLabels=true ./hub-agent.yaml >> hub-agent.yaml
-
       - name: Get chart verison
         id: chart_version
         run: |
@@ -63,7 +58,6 @@ jobs:
           name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           generateReleaseNotes: true
-          artifacts: "hub-agent.yaml"
         if: steps.tag_exists.outputs.TAG_EXISTS == 'false'
 
       - name: Publish Helm chart

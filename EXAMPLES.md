@@ -16,3 +16,12 @@ helm upgrade --install hub-agent traefik/hub-agent \
   --set controllerDeployment.args="{--log-level=debug,--ingress-class-name=${INGRESS_CLASS_NAME}}"
   --set token="${HUB_TOKEN}"
 ```
+
+# Generate YAML to manage with a GitOps tool
+
+You will need to create a `Secret` _hub-token_ with a valid _token_
+```bash
+helm template traefik-hub --namespace hub-agent \
+  --set tokenSecretRef.name=hub-token --set tokenSecretRef.key=token \
+  --set withoutHelmLabels=true --include-crds traefik/hub-agent
+```
