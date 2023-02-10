@@ -34,6 +34,7 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: hub-agent-auth-server
+      automountServiceAccountToken: true
       {{- with .Values.image.pullSecrets }}
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
