@@ -40,21 +40,8 @@ spec:
       {{- end }}
       containers:
         - name: hub-agent-tunnel
-          env:
-            {{- if .Values.tokenSecretRef }}
-            - name: HUB_SECRET_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  {{- with .Values.tokenSecretRef }}
-                  {{- toYaml . | nindent 18 }}
-                  {{- end -}}
-            {{- end }}
           image: {{ template "hub-helm-chart.image-name" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            {{- with .Values.resources }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
           args:
             - tunnel
             {{ if .Values.tokenSecretRef -}}
@@ -69,6 +56,27 @@ spec:
             - {{ . | quote }}
           {{ end }}
           {{ end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            {{- if .Values.tokenSecretRef }}
+            - name: HUB_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- with .Values.tokenSecretRef }}
+                  {{- toYaml . | nindent 18 }}
+                  {{- end -}}
+            {{- end }}
+          resources:
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
