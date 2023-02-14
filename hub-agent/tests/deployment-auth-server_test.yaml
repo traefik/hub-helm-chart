@@ -58,3 +58,9 @@ tests:
       - equal:
           path: spec.template.metadata.labels.custom-label
           value: plop
+  - it: should provide a restrictive securityContext by default
+    set:
+      token: "test"
+    asserts:
+      - isNotEmpty:
+          path: spec.template.spec.containers[0].securityContext
