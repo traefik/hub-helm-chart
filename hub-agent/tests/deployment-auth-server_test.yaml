@@ -58,3 +58,22 @@ tests:
       - equal:
           path: spec.template.metadata.labels.custom-label
           value: plop
+  - it: should provide a restrictive securityContext by default
+    set:
+      token: "test"
+    asserts:
+      - isNotEmpty:
+          path: spec.template.spec.containers[0].securityContext
+  - it: listen port & probes port should be the same
+    set:
+      token: "test"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: "--listen-addr=:8080"
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: 8080
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: 8080

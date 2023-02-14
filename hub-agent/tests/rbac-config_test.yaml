@@ -13,3 +13,12 @@ tests:
       - isKind:
           of: ServiceAccount
         template: rbac/service-accounts.yaml
+  - it: should not automountServiceToken by default on ServiceAccount
+    template: rbac/service-accounts.yaml
+    set:
+      token: "test"
+    asserts:
+      - equal:
+          path: automountServiceAccountToken
+          value: false
+            

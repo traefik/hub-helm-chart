@@ -41,6 +41,8 @@ spec:
   ports:
     - port: 80
       name: hub-agent-auth
+      protocol: TCP
+      targetPort: 8080
   selector:
     app: hub-agent
     component: auth-server

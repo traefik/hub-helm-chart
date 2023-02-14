@@ -34,41 +34,50 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: hub-agent-auth-server
+      automountServiceAccountToken: true
       {{- with .Values.image.pullSecrets }}
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: hub-agent-auth-server
+          image: {{ template "hub-helm-chart.image-name" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - auth-server
+            - --listen-addr=:8080
+            {{- with .Values.authServerDeployment.args }}
+            {{- range . }}
+            - {{ . | quote }}
+              {{- end }}
+              {{- end }}
           env:
             - name: DISABLE_GIT_SSL_VERIFY
               value: "true"
-          image: {{ template "hub-helm-chart.image-name" . }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:
             httpGet:
               path: /_ready
-              port: 80
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 20
           livenessProbe:
             httpGet:
               path: /_live
-              port: 80
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 20
           resources:
           {{- with .Values.resources }}
           {{- toYaml . | nindent 12 }}
           {{- end }}
-          args:
-            - auth-server
-            - --listen-addr=:80
-            {{- with .Values.authServerDeployment.args }}
-            {{- range . }}
-            - {{ . | quote }}
-              {{- end }}
-              {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}

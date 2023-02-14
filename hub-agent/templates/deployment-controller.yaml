@@ -34,36 +34,15 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: hub-agent-controller
+      automountServiceAccountToken: true
       {{- with .Values.image.pullSecrets }}
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: hub-agent-controller
-          env:
-            - name: DISABLE_GIT_SSL_VERIFY
-              value: "true"
-            {{- range .Values.controllerDeployment.env }}
-            - name: {{ .name }}
-              value: {{ .value }}
-            {{- end }}
-            {{- if .Values.tokenSecretRef }}
-            - name: HUB_SECRET_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  {{- with .Values.tokenSecretRef }}
-                  {{- toYaml . | nindent 18 }}
-                  {{- end -}}
-            {{- end }}
           image: {{ template "hub-helm-chart.image-name" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            {{- with .Values.resources }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
-          volumeMounts:
-            - mountPath: /var/run/hub-agent-kubernetes/
-              name: hub-certs
           args:
             - controller
             {{ if .Values.tokenSecretRef -}}
@@ -85,6 +64,33 @@ spec:
             - {{ . | quote }}
           {{- end }}
           {{- end }}
+          env:
+            - name: DISABLE_GIT_SSL_VERIFY
+              value: "true"
+            {{- range .Values.controllerDeployment.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
+            {{- if .Values.tokenSecretRef }}
+            - name: HUB_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- with .Values.tokenSecretRef }}
+                  {{- toYaml . | nindent 18 }}
+                  {{- end -}}
+            {{- end }}
+          resources:
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - mountPath: /var/run/hub-agent-kubernetes/
+              name: hub-certs
       volumes:
         - name: hub-certs
           secret:

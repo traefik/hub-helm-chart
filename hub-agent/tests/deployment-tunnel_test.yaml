@@ -119,3 +119,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].args[5]
           value: --platform-url=https://hub.traefik.io/agent
+  - it: should provide a restrictive securityContext by default
+    set:
+      token: "test"
+    asserts:
+      - isNotEmpty:
+          path: spec.template.spec.containers[0].securityContext
