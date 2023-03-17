@@ -5,7 +5,7 @@ metadata:
   name: hub-catch-all
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- include "hub-helm-chart.labels" . | nindent 4 }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
   annotations:
     traefik.ingress.kubernetes.io/service.passhostheader: "false"
 spec:

@@ -5,7 +5,7 @@ metadata:
   name: hub-agent-controller
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- include "hub-helm-chart.labels" . | nindent 4 }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
   {{- with .Values.controllerDeployment.labels }}
   {{- toYaml . | nindent 4 }}
