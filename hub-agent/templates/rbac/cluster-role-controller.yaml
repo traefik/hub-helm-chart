@@ -6,7 +6,6 @@ metadata:
   labels:
     {{- include "hub-helm-chart.labels" . | nindent 4 }}
 rules:
-  # Access Control RBACs.
   - apiGroups:
       - networking.k8s.io
       - hub.traefik.io
