@@ -55,9 +55,9 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 20
           resources:
-          {{- with .Values.resources }}
-          {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
@@ -69,17 +69,17 @@ spec:
             {{- with .Values.devPortalDeployment.args }}
             {{- range . }}
             - {{ . | quote }}
-              {{- end }}
-              {{- end }}
+            {{- end }}
+            {{- end }}
       {{- with .Values.affinity }}
       affinity:
-      {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
-      {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
-  {{- toYaml . | nindent 8 }}
-  {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -74,7 +74,7 @@ tests:
           value: "testvalue"
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].env[1]
+          path: spec.template.spec.containers[0].env[0]
           value:
             name: TEST_ENV_VAR
             value: testvalue
@@ -85,7 +85,7 @@ tests:
         key: token
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].env[1]
+          path: spec.template.spec.containers[0].env[0]
           value:
             name: HUB_SECRET_TOKEN
             valueFrom:
