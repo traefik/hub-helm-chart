@@ -17,10 +17,10 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .pathPrefix
+    - jsonPath: .spec.pathPrefix
       name: PathPrefix
       type: string
-    - jsonPath: .apiSelector
+    - jsonPath: .status.apiSelector
       name: APISelector
       type: string
     name: v1alpha1
@@ -99,6 +99,8 @@ spec:
           status:
             description: The current status of this APICollection.
             properties:
+              apiSelector:
+                type: string
               hash:
                 description: Hash is a hash representing the APICollection.
                 type: string

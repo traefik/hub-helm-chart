@@ -17,13 +17,13 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .pathPrefix
+    - jsonPath: .spec.pathPrefix
       name: PathPrefix
       type: string
-    - jsonPath: .service.name
+    - jsonPath: .spec.service.name
       name: ServiceName
       type: string
-    - jsonPath: .service.port
+    - jsonPath: .spec.service.port.number
       name: ServicePort
       type: string
     name: v1alpha1
@@ -74,17 +74,8 @@ spec:
                             format: int32
                             type: integer
                         type: object
-                      schema:
-                        description: Spec is an OpenAPI Specification.
-                        properties:
-                          openapi:
-                            type: string
-                          swagger:
-                            type: string
-                        required:
-                        - openapi
-                        - swagger
-                        type: object
+                      protocol:
+                        type: string
                       url:
                         type: string
                     type: object
