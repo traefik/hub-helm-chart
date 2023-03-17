@@ -57,8 +57,6 @@ spec:
               {{- end }}
               {{- end }}
           env:
-            - name: DISABLE_GIT_SSL_VERIFY
-              value: "true"
           readinessProbe:
             httpGet:
               path: /_ready

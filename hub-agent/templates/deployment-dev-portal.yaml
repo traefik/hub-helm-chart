@@ -40,9 +40,6 @@ spec:
       {{- end }}
       containers:
         - name: hub-agent-dev-portal
-          env:
-            - name: DISABLE_GIT_SSL_VERIFY
-              value: "true"
           image: {{ template "hub-helm-chart.image-name" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:

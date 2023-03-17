@@ -70,8 +70,6 @@ spec:
           {{- end }}
           {{- end }}
           env:
-            - name: DISABLE_GIT_SSL_VERIFY
-              value: "true"
             {{- range .Values.controllerDeployment.env }}
             - name: {{ .name }}
               value: {{ .value }}
