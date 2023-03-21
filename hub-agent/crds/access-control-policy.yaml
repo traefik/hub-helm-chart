@@ -1,4 +1,3 @@
-
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -36,6 +35,63 @@ spec:
             spec:
               description: AccessControlPolicySpec configures an access control policy.
               properties:
+                apiKey:
+                  description: AccessControlPolicyAPIKey configure an APIKey control
+                    policy.
+                  properties:
+                    forwardHeaders:
+                      additionalProperties:
+                        type: string
+                      description: ForwardHeaders instructs the middleware to forward
+                        key metadata as header values upon successful authentication.
+                      type: object
+                    keySource:
+                      description: KeySource defines how to extract API keys from requests.
+                      properties:
+                        cookie:
+                          description: Cookie is the name of a cookie.
+                          type: string
+                        header:
+                          description: Header is the name of a header.
+                          type: string
+                        headerAuthScheme:
+                          description: HeaderAuthScheme sets an optional auth scheme
+                            when Header is set to "Authorization". If set, this scheme
+                            is removed from the token, and all requests not including
+                            it are dropped.
+                          type: string
+                        query:
+                          description: Query is the name of a query parameter.
+                          type: string
+                      type: object
+                    keys:
+                      description: Keys define the set of authorized keys to access
+                        a protected resource.
+                      items:
+                        description: AccessControlPolicyAPIKeyKey defines an API key.
+                        properties:
+                          id:
+                            description: ID is the unique identifier of the key.
+                            type: string
+                          metadata:
+                            additionalProperties:
+                              type: string
+                            description: Metadata holds arbitrary metadata for this
+                              key, can be used by ForwardHeaders.
+                            type: object
+                          value:
+                            description: Value is the SHAKE-256 hash (using 64 bytes)
+                              of the API key.
+                            type: string
+                        required:
+                          - id
+                          - value
+                        type: object
+                      minItems: 1
+                      type: array
+                  required:
+                    - keySource
+                  type: object
                 basicAuth:
                   description: AccessControlPolicyBasicAuth holds the HTTP basic authentication
                     configuration.
@@ -76,8 +132,121 @@ spec:
                     tokenQueryKey:
                       type: string
                   type: object
+                oAuthIntro:
+                  description: AccessControlOAuthIntro configures an OAuth 2.0 Token
+                    Introspection access control policy.
+                  properties:
+                    claims:
+                      type: string
+                    clientConfig:
+                      description: AccessControlOAuthIntroClientConfig configures the
+                        OAuth 2.0 client for issuing token introspection requests.
+                      properties:
+                        auth:
+                          description: Auth configures the required authentication to
+                            the Authorization Server.
+                          properties:
+                            kind:
+                              description: Kind sets the kind of authentication that
+                                can be used to authenticate requests. The content of
+                                the referenced depends on this kind.
+                              enum:
+                                - Basic
+                                - Bearer
+                                - Header
+                                - Query
+                              type: string
+                            secret:
+                              description: Secret is the reference to the Kubernetes
+                                secrets containing sensitive authentication data.
+                              properties:
+                                name:
+                                  description: name is unique within a namespace to
+                                    reference a secret resource.
+                                  type: string
+                                namespace:
+                                  description: namespace defines the space within which
+                                    the secret name must be unique.
+                                  type: string
+                              type: object
+                          required:
+                            - kind
+                            - secret
+                          type: object
+                        headers:
+                          additionalProperties:
+                            type: string
+                          description: Headers to set when sending requests to the Authorization
+                            Server.
+                          type: object
+                        maxRetries:
+                          default: 3
+                          description: MaxRetries defines the number of retries for
+                            introspection requests.
+                          type: integer
+                        timeoutSeconds:
+                          default: 5
+                          description: TimeoutSeconds configures the maximum amount
+                            of seconds to wait before giving up on requests.
+                          type: integer
+                        tls:
+                          description: TLS configures TLS communication with the Authorization
+                            Server.
+                          properties:
+                            caBundle:
+                              description: CABundle sets the CA bundle used to sign
+                                the Authorization Server certificate.
+                              type: string
+                            insecureSkipVerify:
+                              description: InsecureSkipVerify skips the Authorization
+                                Server certificate validation. For testing purposes
+                                only, do not use in production.
+                              type: boolean
+                          type: object
+                        tokenTypeHint:
+                          description: TokenTypeHint is a hint to pass to the Authorization
+                            Server. See https://tools.ietf.org/html/rfc7662#section-2.1
+                            for more information.
+                          type: string
+                        url:
+                          description: URL of the Authorization Server.
+                          type: string
+                      required:
+                        - auth
+                        - url
+                      type: object
+                    forwardHeaders:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    tokenSource:
+                      description: 'TokenSource describes how to extract tokens from
+                      HTTP requests. If multiple sources are set, the order is the
+                      following: header > query > cookie.'
+                      properties:
+                        cookie:
+                          description: Cookie is the name of a cookie.
+                          type: string
+                        header:
+                          description: Header is the name of a header.
+                          type: string
+                        headerAuthScheme:
+                          description: HeaderAuthScheme sets an optional auth scheme
+                            when Header is set to "Authorization". If set, this scheme
+                            is removed from the token, and all requests not including
+                            it are dropped.
+                          type: string
+                        query:
+                          description: Query is the name of a query parameter.
+                          type: string
+                      type: object
+                  required:
+                    - clientConfig
+                    - tokenSource
+                  type: object
                 oidc:
-                  description: AccessControlOIDC holds the OIDC authentication configuration.
+                  description: AccessControlPolicyOIDC holds the OIDC authentication
+                    configuration.
                   properties:
                     authParams:
                       additionalProperties:
@@ -106,11 +275,11 @@ spec:
                         has enough information to retrieve secret in any namespace
                       properties:
                         name:
-                          description: Name is unique within a namespace to reference
+                          description: name is unique within a namespace to reference
                             a secret resource.
                           type: string
                         namespace:
-                          description: Namespace defines the space within which the
+                          description: namespace defines the space within which the
                             secret name must be unique.
                           type: string
                       type: object
@@ -142,7 +311,7 @@ spec:
                       type: object
                   type: object
                 oidcGoogle:
-                  description: AccessControlOIDCGoogle holds the Google OIDC authentication
+                  description: AccessControlPolicyOIDCGoogle holds the Google OIDC authentication
                     configuration.
                   properties:
                     authParams:
@@ -155,6 +324,7 @@ spec:
                       description: Emails are the allowed emails to connect.
                       items:
                         type: string
+                      minItems: 1
                       type: array
                     forwardHeaders:
                       additionalProperties:
@@ -169,11 +339,11 @@ spec:
                         has enough information to retrieve secret in any namespace
                       properties:
                         name:
-                          description: Name is unique within a namespace to reference
+                          description: name is unique within a namespace to reference
                             a secret resource.
                           type: string
                         namespace:
-                          description: Namespace defines the space within which the
+                          description: namespace defines the space within which the
                             secret name must be unique.
                           type: string
                       type: object
@@ -203,8 +373,6 @@ spec:
                         secure:
                           type: boolean
                       type: object
-                  required:
-                    - emails
                   type: object
               type: object
             status:

@@ -6,7 +6,6 @@ metadata:
   labels:
     {{- include "hub-helm-chart.labels" . | nindent 4 }}
 rules:
-  # Access Control RBACs.
   - apiGroups:
       - networking.k8s.io
       - hub.traefik.io
@@ -21,12 +20,19 @@ rules:
     resources:
       - accesscontrolpolicies
       - edgeingresses
+      - apis
+      - apiaccesses
+      - apicollections
+      - apigateways
+      - apiportals
     verbs:
       - list
       - watch
       - create
       - update
+      - patch
       - delete
+      - get
   - apiGroups:
       - traefik.containo.us
     resources:

@@ -4,7 +4,7 @@ image:
   pullPolicy: Always
   pullSecrets: []
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "v1.1.0"
+  # tag: "v1.2.0"
 
 # User token to access to hub
 token: ""
@@ -64,6 +64,21 @@ tunnelDeployment:
   traefik:
     tunnelHost: traefik-hub.hub-agent.svc.cluster.local
     tunnelPort: 9901
+  args:
+    - --log-level=debug
+
+devPortalDeployment:
+  # Number of replicas
+  replicas: 3
+  # Additional deployment annotations
+  annotations:
+    hub.traefik.io/ingress-controller: none
+  # Additional deployment labels
+  labels: {}
+  # Additional pods annotations
+  podAnnotations: {}
+  # Additional pods labels
+  podLabels: {}
   args:
     - --log-level=debug
 

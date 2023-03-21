@@ -5,7 +5,7 @@ metadata:
   name: hub-agent-controller
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- include "hub-helm-chart.labels" . | nindent 4 }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
   {{- with .Values.service.labels }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -28,7 +28,7 @@ metadata:
   name: hub-agent-auth-server
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- include "hub-helm-chart.labels" . | nindent 4 }}
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
   {{- with .Values.service.labels }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -46,3 +46,26 @@ spec:
   selector:
     app: hub-agent
     component: auth-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-agent-dev-portal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hub-helm-chart.labels" . | nindent 4 }}
+    {{- with .Values.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+  {{- with .Values.devPortalDeployment.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      name: hub-agent-dev-portal
+  selector:
+    app: hub-agent
+    component: dev-portal

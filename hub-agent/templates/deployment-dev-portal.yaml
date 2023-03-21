@@ -2,94 +2,84 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hub-agent-auth-server
+  name: hub-agent-dev-portal
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "hub-helm-chart.labels" . | nindent 4 }}
-    app.kubernetes.io/component: auth-server
-  {{- with .Values.authServerDeployment.labels }}
+  {{- with .Values.devPortalDeployment.labels }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
   annotations:
-  {{- with .Values.authServerDeployment.annotations }}
+  {{- with .Values.devPortalDeployment.annotations }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  replicas: {{ .Values.authServerDeployment.replicas }}
+  replicas: {{ .Values.devPortalDeployment.replicas }}
   selector:
     matchLabels:
       app: hub-agent
-      component: auth-server
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-    type: RollingUpdate
+      component: dev-portal
   template:
     metadata:
       labels:
         app: hub-agent
-        component: auth-server
-      {{- with .Values.authServerDeployment.podLabels }}
+        component: dev-portal
+      {{- with .Values.devPortalDeployment.podLabels }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
       annotations:
-      {{- with .Values.authServerDeployment.podAnnotations }}
+      {{- with .Values.devPortalDeployment.podAnnotations }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      serviceAccountName: hub-agent-auth-server
+      serviceAccountName: hub-agent-dev-portal
       automountServiceAccountToken: true
       {{- with .Values.image.pullSecrets }}
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: hub-agent-auth-server
+        - name: hub-agent-dev-portal
           image: {{ template "hub-helm-chart.image-name" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            - auth-server
-            - --listen-addr=:8080
-            {{- with .Values.authServerDeployment.args }}
-            {{- range . }}
-            - {{ . | quote }}
-              {{- end }}
-              {{- end }}
-          env:
           readinessProbe:
             httpGet:
               path: /_ready
-              port: 8080
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 20
           livenessProbe:
             httpGet:
               path: /_live
-              port: 8080
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 20
           resources:
-          {{- with .Values.resources }}
-          {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            runAsUser: 65532
-            runAsGroup: 65532
+            readOnlyRootFilesystem: false
             seccompProfile:
               type: RuntimeDefault
+          args:
+            - dev-portal
+            - --listen-addr=:80
+            {{- with .Values.devPortalDeployment.args }}
+            {{- range . }}
+            - {{ . | quote }}
+            {{- end }}
+            {{- end }}
       {{- with .Values.affinity }}
       affinity:
-      {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
-      {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
-  {{- toYaml . | nindent 8 }}
-  {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

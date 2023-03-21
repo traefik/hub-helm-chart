@@ -3,5 +3,10 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - access-control-policy.yaml
+  - api-accesses.yaml
+  - api-collections.yaml
+  - api-gateways.yaml
+  - api-portals.yaml
+  - apis.yaml
   - edge-ingress.yaml
   - ingress-class.yaml
