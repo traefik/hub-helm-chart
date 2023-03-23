@@ -40,9 +40,9 @@ tests:
         name: hub-token
         key: token
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].env[0]
-          value:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
             name: HUB_SECRET_TOKEN
             valueFrom:
               secretKeyRef:
