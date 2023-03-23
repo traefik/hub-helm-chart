@@ -73,6 +73,10 @@ spec:
               drop:
                 - ALL
           env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             {{- if .Values.tokenSecretRef }}
             - name: HUB_SECRET_TOKEN
               valueFrom:

@@ -70,6 +70,10 @@ spec:
           {{- end }}
           {{- end }}
           env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             {{- range .Values.controllerDeployment.env }}
             - name: {{ .name }}
               value: {{ .value }}
