@@ -5,7 +5,7 @@ tests:
   - it: should have the external name set
     set:
       catchAllService:
-          externalName: plop
+        externalName: plop
     asserts:
       - isKind:
           of: Service

@@ -81,6 +81,9 @@ spec:
             runAsGroup: 65532
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}

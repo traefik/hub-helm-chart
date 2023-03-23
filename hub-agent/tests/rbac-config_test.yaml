@@ -21,4 +21,3 @@ tests:
       - equal:
           path: automountServiceAccountToken
           value: false
-            

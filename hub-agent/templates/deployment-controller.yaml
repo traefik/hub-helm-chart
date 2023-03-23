@@ -88,9 +88,15 @@ spec:
             {{- end }}
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
             seccompProfile:
               type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - mountPath: /var/run/hub-agent-kubernetes/
               name: hub-certs

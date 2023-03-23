@@ -1,0 +1,103 @@
+suite: Hub deployment defaults
+templates:
+  - deployment-auth-server.yaml
+  - deployment-controller.yaml
+  - deployment-dev-portal.yaml
+  - deployment-tunnel.yaml
+tests:
+  - it: should have replicas set
+    set:
+      token: "test"
+    asserts:
+      - isNotEmpty:
+          path: spec.replicas
+      - notEqual:
+          path: spec.replicas
+          value: 0
+
+  - it: should change image when image.tag is specified
+    set:
+      image:
+        name: ghcr.io/traefik/hub-agent-kubernetes
+        tag: alpha2.0
+      token: "test"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[*].image
+          value: ghcr.io/traefik/hub-agent-kubernetes:alpha2.0
+
+  - it: should have an image when image.name is specified
+    set:
+      image:
+        name: ghcr.io/traefik/hub-agent-kubernetes
+        tag: experimental
+      token: "test"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[*].image
+          value: ghcr.io/traefik/hub-agent-kubernetes:experimental
+
+  - it: should change the pullPolicy if specified
+    set:
+      image:
+        pullPolicy: Always
+      token: "test"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[*].imagePullPolicy
+          value: Always
+
+  - it: should set the imagePullSecrets if specified
+    set:
+      image:
+        pullSecrets:
+          - name: myregistrykey
+      token: "test"
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets
+          value:
+            - name: myregistrykey
+
+  - it: it should have a RollingUpdate Strategy
+    set:
+      token: "test"
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate
+      - equal:
+          path: spec.strategy.rollingUpdate.maxSurge
+          value: 1
+      - equal:
+          path: spec.strategy.rollingUpdate.maxUnavailable
+          value: 0
+
+  - it: should provide a restrictive securityContext by default
+    set:
+      token: "test"
+    asserts:
+      - isNotEmpty:
+          path: spec.template.spec.containers[*].securityContext
+      - equal:
+          path: spec.template.spec.containers[*].securityContext.allowPrivilegeEscalation
+          value: false
+      - equal:
+          path: spec.template.spec.containers[*].securityContext.readOnlyRootFilesystem
+          value: true
+      - equal:
+          path: spec.template.spec.containers[*].securityContext.runAsNonRoot
+          value: true
+      - equal:
+          path: spec.template.spec.containers[*].securityContext.runAsUser
+          value: 65532
+      - equal:
+          path: spec.template.spec.containers[*].securityContext.runAsGroup
+          value: 65532
+      - isNotEmpty:
+          path: spec.template.spec.containers[*].securityContext.seccompProfile.type
+      - equal:
+          path: spec.template.spec.containers[*].securityContext.capabilities
+          value:
+            drop:
+              - ALL

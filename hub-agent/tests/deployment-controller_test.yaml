@@ -9,37 +9,6 @@ tests:
       - equal:
           path: spec.replicas
           value: 1
-  - it: should change image when image.tag is specified
-    set:
-      token: "test"
-      image:
-        name: ghcr.io/traefik/hub-agent-kubernetes
-        tag:
-          alpha2.0
-    asserts:
-      - equal:
-          path: spec.template.spec.containers[0].image
-          value: ghcr.io/traefik/hub-agent-kubernetes:alpha2.0
-  - it: should change the pullPolicy if specified
-    set:
-      token: "test"
-      image:
-        pullPolicy:
-          Always
-    asserts:
-      - equal:
-          path: spec.template.spec.containers[0].imagePullPolicy
-          value: Always
-  - it: should have an image when image.name is specified
-    set:
-      token: "test"
-      image:
-        name: ghcr.io/traefik/hub-agent-kubernetes
-        tag: experimental
-    asserts:
-      - equal:
-          path: spec.template.spec.containers[0].image
-          value: ghcr.io/traefik/hub-agent-kubernetes:experimental
   - it: should have annotations and/or  podsAnnotations when specified
     set:
       token: "test"
@@ -70,8 +39,8 @@ tests:
       token: "test"
       controllerDeployment:
         env:
-        - name: "TEST_ENV_VAR"
-          value: "testvalue"
+          - name: "TEST_ENV_VAR"
+            value: "testvalue"
     asserts:
       - equal:
           path: spec.template.spec.containers[0].env[0]
@@ -123,8 +92,8 @@ tests:
       token: test
       controllerDeployment:
         args:
-        - --log-level=debug
-        - --platform-url=https://hub.traefik.io/agent
+          - --log-level=debug
+          - --platform-url=https://hub.traefik.io/agent
     asserts:
       - equal:
           path: spec.template.spec.containers[0].args[7]
@@ -132,22 +101,3 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].args[8]
           value: --platform-url=https://hub.traefik.io/agent
-  - it: should provide a restrictive securityContext by default
-    set:
-      token: "test"
-    asserts:
-      - isNotEmpty:
-          path: spec.template.spec.containers[0].securityContext
-  - it: it should have a RollingUpdate Strategy
-    set:
-      token: "test"
-    asserts:
-      - equal:
-          path: spec.strategy.type
-          value: RollingUpdate
-      - equal:
-          path: spec.strategy.rollingUpdate.maxSurge
-          value: 1
-      - equal:
-          path: spec.strategy.rollingUpdate.maxUnavailable
-          value: 0
