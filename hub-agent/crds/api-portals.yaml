@@ -50,6 +50,8 @@ spec:
                 type: array
               description:
                 type: string
+              title:
+                type: string
             required:
             - apiGateway
             type: object
