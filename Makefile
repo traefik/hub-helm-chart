@@ -1,6 +1,7 @@
 .PHONY: lint test
 
 test:
+	@mkdir -p hub-agent/tests/__snapshot__
 	docker run ${DOCKER_ARGS} --entrypoint /bin/sh --rm -v $(CURDIR):/charts -w /charts helmunittest/helm-unittest:3.11.1-0.3.0 /charts/hack/test.sh
 
 lint:
