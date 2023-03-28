@@ -55,7 +55,7 @@ spec:
             {{ else -}}
             - --token={{ required "A valid .Values.token or .Values.tokenSecretRef is required." .Values.token }}
             {{ end -}}
-            - --acp-server.listen-addr=:443
+            - --acp-server.listen-addr=:8443
             - --acp-server.cert=/var/run/hub-agent-kubernetes/cert.pem
             - --acp-server.key=/var/run/hub-agent-kubernetes/key.pem
             - --acp-server.auth-server-addr=http://hub-agent-auth-server.{{ .Release.Namespace }}.svc.cluster.local
