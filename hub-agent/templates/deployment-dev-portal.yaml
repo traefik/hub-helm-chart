@@ -50,13 +50,13 @@ spec:
           readinessProbe:
             httpGet:
               path: /_ready
-              port: 80
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 20
           livenessProbe:
             httpGet:
               path: /_live
-              port: 80
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 20
           resources:
@@ -76,7 +76,7 @@ spec:
                 - ALL
           args:
             - dev-portal
-            - --listen-addr=:80
+            - --listen-addr=:8080
             {{- with .Values.devPortalDeployment.args }}
             {{- range . }}
             - {{ . | quote }}
