@@ -128,3 +128,10 @@ rules:
       - pods/log
     verbs:
       - get
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
