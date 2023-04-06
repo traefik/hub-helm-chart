@@ -76,11 +76,25 @@ spec:
                 - ALL
           args:
             - dev-portal
+            {{ if .Values.tokenSecretRef -}}
+            - --token=$(HUB_SECRET_TOKEN)
+            {{ else -}}
+            - --token={{ required "A valid .Values.token or .Values.tokenSecretRef is required." .Values.token }}
+            {{ end -}}
             - --listen-addr=:8080
             {{- with .Values.devPortalDeployment.args }}
             {{- range . }}
             - {{ . | quote }}
             {{- end }}
+            {{- end }}
+          env:
+            {{- if .Values.tokenSecretRef }}
+            - name: HUB_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- with .Values.tokenSecretRef }}
+                  {{- toYaml . | nindent 18 }}
+                  {{- end -}}
             {{- end }}
       {{- with .Values.affinity }}
       affinity:
