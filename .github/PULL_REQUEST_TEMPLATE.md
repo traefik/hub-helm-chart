@@ -12,6 +12,7 @@
 
 - [ ] Yes, I updated the tests accordingly
 - [ ] Yes, I ran `make test` and all the tests passed
+- [ ] Yes, I bumped the alpha version of the Chart.
 
 <!--
 HOW TO WRITE A GOOD PULL REQUEST? 
