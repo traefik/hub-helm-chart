@@ -56,6 +56,20 @@ helm uninstall hub-agent --namespace hub-namespace
 
 ## Contributing 
 
+### Versioning
+
+We use [Semantic Versioning](https://semver.org/).
+
+Pull requests must bump the `version` of the chart specified in [Chart.yaml](./Chart.yaml):
+- The new version must be an alpha pre-release (e.g. 1.6.0-alpha.1)
+- The new version must reflect the nature of the change, according to Semver specification.
+
+A chart can be made available publicly by removing the pre-release suffix, this must be done on a separate PR by a maintainer.
+
+Every version bump are published on the Helm Chart Registry.
+
+The latest pre-release version of the Chart can be used by specifying `--devel` on the `install` and `upgrade` commands.
+
 ### Launch unit tests
 
 ```bash
