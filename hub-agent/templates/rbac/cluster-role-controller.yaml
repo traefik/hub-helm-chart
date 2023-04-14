@@ -46,6 +46,7 @@ rules:
   - apiGroups:
       - ""
     resources:
+      - nodes
       - namespaces
       - pods
     verbs:
@@ -135,3 +136,9 @@ rules:
     verbs:
       - create
       - patch
+  - apiGroups:
+      - discovery
+    resources:
+      - endpointslices
+    verbs:
+      - list
