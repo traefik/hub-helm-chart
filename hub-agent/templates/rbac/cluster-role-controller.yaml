@@ -46,11 +46,18 @@ rules:
   - apiGroups:
       - ""
     resources:
-      - nodes
       - namespaces
       - pods
     verbs:
       - list
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - list
+      - get
+      - watch
   - apiGroups:
       - traefik.containo.us
     resources:
@@ -137,8 +144,10 @@ rules:
       - create
       - patch
   - apiGroups:
-      - discovery
+      - discovery.k8s.io
     resources:
       - endpointslices
     verbs:
       - list
+      - get
+      - watch
