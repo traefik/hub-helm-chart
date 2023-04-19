@@ -56,7 +56,7 @@ spec:
             {{ end -}}
             - --traefik.tunnel-port={{ .Values.tunnelDeployment.traefik.tunnelPort }}
             {{ if .Values.tunnelDeployment.traefik.tunnelHost -}}
-            - --traefik.tunnel-host={{ required "A valid .Values.tunnelDeployment.traefik.tunnelHost is required." .Values.tunnelDeployment.traefik.tunnelHost }}
+            - --traefik.tunnel-host={{ .Values.tunnelDeployment.traefik.tunnelHost }}
             {{ else -}}
             - --traefik.tunnel-host={{ template "hub-helm-chart.traefikService" . }}
             {{ end -}}
