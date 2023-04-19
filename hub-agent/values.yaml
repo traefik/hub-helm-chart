@@ -29,7 +29,7 @@ controllerDeployment:
   podLabels: {}
   # Traefik Proxy configuration
   traefik: {}
-#    metricsURL: http://traefik-hub.$(POD_NAMESPACE).svc.cluster.local:9100/metrics
+    # metricsURL: http://traefik-hub.$(POD_NAMESPACE).svc.cluster.local:9100/metrics
 
   args:
     - --log-level=debug
@@ -67,7 +67,7 @@ tunnelDeployment:
   # Traefik Proxy tunnel configuration
   traefik:
     tunnelPort: 9901
-#    tunnelHost: traefik-hub.$(POD_NAMESPACE).svc.cluster.local
+    # tunnelHost: traefik-hub.$(POD_NAMESPACE).svc.cluster.local
   args:
     - --log-level=debug
 
