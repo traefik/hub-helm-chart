@@ -76,16 +76,16 @@ spec:
                 - ALL
           args:
             - dev-portal
-            {{ if .Values.tokenSecretRef -}}
+            {{- if .Values.tokenSecretRef }}
             - --token=$(HUB_SECRET_TOKEN)
-            {{ else -}}
+            {{- else }}
             - --token={{ required "A valid .Values.token or .Values.tokenSecretRef is required." .Values.token }}
-            {{ end -}}
+            {{- end }}
             - --listen-addr=:8080
             {{- with .Values.devPortalDeployment.args }}
-            {{- range . }}
+             {{- range . }}
             - {{ . | quote }}
-            {{- end }}
+             {{- end }}
             {{- end }}
           env:
             {{- if .Values.tokenSecretRef }}

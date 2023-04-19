@@ -49,22 +49,22 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - tunnel
-            {{ if .Values.tokenSecretRef -}}
+            {{- if .Values.tokenSecretRef }}
             - --token=$(HUB_SECRET_TOKEN)
-            {{ else -}}
+            {{- else }}
             - --token={{ required "A valid .Values.token or .Values.tokenSecretRef is required." .Values.token }}
-            {{ end -}}
+            {{- end }}
             - --traefik.tunnel-port={{ .Values.tunnelDeployment.traefik.tunnelPort }}
-            {{ if .Values.tunnelDeployment.traefik.tunnelHost -}}
+            {{- if .Values.tunnelDeployment.traefik.tunnelHost }}
             - --traefik.tunnel-host={{ .Values.tunnelDeployment.traefik.tunnelHost }}
-            {{ else -}}
+            {{- else }}
             - --traefik.tunnel-host={{ template "hub-helm-chart.traefikService" . }}
-            {{ end -}}
-          {{- with .Values.tunnelDeployment.args -}}
+            {{- end }}
+          {{- with .Values.tunnelDeployment.args }}
           {{- range . }}
             - {{ . | quote }}
-          {{ end }}
-          {{ end }}
+          {{- end }}
+          {{- end }}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
