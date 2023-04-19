@@ -14,6 +14,9 @@ token: ""
 #    name: hub-token
 #    key: token
 
+# The Namespace of your Traefik Proxy installation
+traefikNamespace: $(POD_NAMESPACE)
+
 controllerDeployment:
   # Additional deployment annotations
   annotations:
@@ -24,9 +27,9 @@ controllerDeployment:
   podAnnotations: {}
   # Additional pods labels
   podLabels: {}
-  # Traefik metrics configuration
-  traefik:
-    metricsURL: http://traefik-hub.$(POD_NAMESPACE).svc.cluster.local:9100/metrics
+  # Traefik Proxy configuration
+  traefik: {}
+#    metricsURL: http://traefik-hub.$(POD_NAMESPACE).svc.cluster.local:9100/metrics
 
   args:
     - --log-level=debug
@@ -61,10 +64,10 @@ tunnelDeployment:
   podAnnotations: {}
   # Additional pods labels
   podLabels: {}
-  # Traefik tunnel configuration
+  # Traefik Proxy tunnel configuration
   traefik:
-    tunnelHost: traefik-hub.$(POD_NAMESPACE).svc.cluster.local
     tunnelPort: 9901
+#    tunnelHost: traefik-hub.$(POD_NAMESPACE).svc.cluster.local
   args:
     - --log-level=debug
 

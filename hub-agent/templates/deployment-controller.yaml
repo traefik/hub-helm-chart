@@ -63,6 +63,8 @@ spec:
             {{ if .Values.controllerDeployment.traefik.metricsURL -}}
             - --traefik.metrics-url={{ .Values.controllerDeployment.traefik.metricsURL }}
             {{ end -}}
+            {{ else -}}
+            - --traefik.metrics-url=http://{{ template "hub-helm-chart.traefikService" . }}:9100/metrics
             {{ end -}}
           {{- with .Values.controllerDeployment.args -}}
           {{ range . }}

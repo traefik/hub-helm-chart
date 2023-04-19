@@ -67,16 +67,16 @@ tests:
         name: hub-token
         key: token
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].args[1]
-          value: --token=$(HUB_SECRET_TOKEN)
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --token=$(HUB_SECRET_TOKEN)
   - it: should set token when set
     set:
       token: "test"
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].args[1]
-          value: --token=test
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --token=test
   - it: should ignore token when secretRef set
     set:
       token: "test"
@@ -84,9 +84,9 @@ tests:
         name: hub-token
         key: token
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].args[1]
-          value: --token=$(HUB_SECRET_TOKEN)
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --token=$(HUB_SECRET_TOKEN)
   - it: should set args for controller
     set:
       token: test
@@ -95,9 +95,37 @@ tests:
           - --log-level=debug
           - --platform-url=https://hub.traefik.io/agent
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].args[7]
-          value: --log-level=debug
-      - equal:
-          path: spec.template.spec.containers[0].args[8]
-          value: --platform-url=https://hub.traefik.io/agent
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --log-level=debug
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --platform-url=https://hub.traefik.io/agent
+  - it: should have metrics url defaults
+    set:
+      token: test
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.metrics-url=http://traefik-hub.$(POD_NAMESPACE).svc.cluster.local:9100/metrics
+  - it: should set metrics url
+    set:
+      token: test
+      controllerDeployment:
+        traefik:
+          metricsURL: http://my-service/metrics
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.metrics-url=http://my-service/metrics
+
+  - it: should not set metrics url
+    set:
+      token: test
+      controllerDeployment:
+        traefik:
+          metricsURL: ""
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.metrics-url
