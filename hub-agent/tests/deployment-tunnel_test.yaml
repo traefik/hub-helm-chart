@@ -40,9 +40,9 @@ tests:
         name: hub-token
         key: token
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].env[0]
-          value:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
             name: HUB_SECRET_TOKEN
             valueFrom:
               secretKeyRef:
@@ -82,9 +82,34 @@ tests:
           - --log-level=debug
           - --platform-url=https://hub.traefik.io/agent
     asserts:
-      - equal:
-          path: spec.template.spec.containers[0].args[4]
-          value: --log-level=debug
-      - equal:
-          path: spec.template.spec.containers[0].args[5]
-          value: --platform-url=https://hub.traefik.io/agent
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --log-level=debug
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --platform-url=https://hub.traefik.io/agent
+          value: --token=$(HUB_SECRET_TOKEN)
+  - it: should have tunnel config defaults
+    set:
+      token: test
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.tunnel-host=traefik-hub.$(POD_NAMESPACE).svc.cluster.local
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.tunnel-port=9901
+  - it: should set tunnel config
+    set:
+      token: test
+      tunnelDeployment:
+        traefik:
+          tunnelPort: 1234
+          tunnelHost: traefik-service
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.tunnel-host=traefik-service
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --traefik.tunnel-port=1234

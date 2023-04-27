@@ -57,3 +57,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 helm.sh/chart: {{ template "hub-helm-chart.chart" . }}
 {{- end }}
 {{- end }}
+
+{{/* Default Traefik Proxy service */}}
+{{- define "hub-helm-chart.traefikService" -}}
+traefik-hub.{{ .Values.traefikNamespace }}.svc.cluster.local
+{{- end }}

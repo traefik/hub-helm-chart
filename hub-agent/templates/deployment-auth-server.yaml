@@ -52,10 +52,10 @@ spec:
             - auth-server
             - --listen-addr=:8080
             {{- with .Values.authServerDeployment.args }}
-            {{- range . }}
+             {{- range . }}
             - {{ . | quote }}
-              {{- end }}
-              {{- end }}
+             {{- end }}
+            {{- end }}
           env:
           readinessProbe:
             httpGet:
